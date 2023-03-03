@@ -12,7 +12,12 @@
     4. useEfect hook
     5. useReducer hook
     
-7.     
+7.  Manage Satate By Reducer Hook
+    1. define redcer
+    2. update fetch
+    3. get state from useReducer 
+
+8.     
 
 
 
