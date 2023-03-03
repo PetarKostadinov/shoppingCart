@@ -1,7 +1,7 @@
 
 import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
 import Home from "./components/Home";
-import Product from "./components/Product";
+import Product from "./components/ProductScreen";
 import Navbar from "react-bootstrap/Navbar";
 import Container from "react-bootstrap/Container";
 import LinkContainer from "react-router-bootstrap/LinkContainer";
@@ -28,7 +28,7 @@ function App() {
           </Container>
         </main>
         <footer>
-          <div className="text-center">All rights reserved. Code: Petar Kostadinov</div>
+          <div className="text-center">All rights reserved &copy;. Code: Petar Kostadinov &#8482; &reg;</div>
         </footer>
       </div>
     </BrowserRouter>

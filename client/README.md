@@ -17,7 +17,10 @@
     2. update fetch
     3. get state from useReducer 
 
-8.     
+8. Create Product and Rating Component
+    1. Rating
+    2. Product
+    3. Use Rating in Product    
 
 
 

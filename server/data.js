@@ -32,7 +32,7 @@ const data = {
             price: 100,
             countMany: 10,
             brand: 'Jack Daniel\'s',
-            rating: 4.5,
+            rating: 3.5,
             numReviews: 10,
             description: 'High quality Tennessee whiskey'
         },
@@ -44,7 +44,7 @@ const data = {
             price: 100,
             countMany: 10,
             brand: 'Veuve Clicquot',
-            rating: 4.5,
+            rating: 4,
             numReviews: 10,
             description: 'Veuve Clicquot is not just champagne, but a lifestyle. Veuve Clicquot brings joy and pleasure to the whole world with its innovation, creativity and a small dose of madness.'
         },
