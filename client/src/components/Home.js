@@ -9,7 +9,6 @@ import Col from 'react-bootstrap/Col';
 import Product from './Product';
 import { Helmet } from 'react-helmet-async';
 
-
 const reducer = (state, action) => {
     switch (action.type) {
         case 'FETCH_REQUEST':
