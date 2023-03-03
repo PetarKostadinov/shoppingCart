@@ -1,5 +1,5 @@
 
-import React, { useEffect, useReducer, useState } from 'react'
+import React, { useEffect, useReducer } from 'react'
 
 //import { data } from '../data'
 import axios from "axios";
@@ -7,6 +7,7 @@ import logger from "use-reducer-logger";
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Product from './Product';
+import { Helmet } from 'react-helmet-async';
 
 
 const reducer = (state, action) => {
@@ -49,6 +50,9 @@ function Home() {
 
     return (
         <div>
+            <Helmet>
+                <title>shopping well</title>
+            </Helmet>
             <h1>Products</h1>
             <div className="products">
                 {loading ? (
@@ -63,7 +67,7 @@ function Home() {
                     <Row>
                         {products.map(x => (
                             <Col key={x.slug} sm={6} md={4} lg={4} className="md-3">
-                               <Product product={x}></Product>
+                                <Product product={x}></Product>
                             </Col>
                         ))}
                     </Row>

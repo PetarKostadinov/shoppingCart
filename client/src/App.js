@@ -1,5 +1,5 @@
 
-import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Home from "./components/Home";
 import Product from "./components/ProductScreen";
 import Navbar from "react-bootstrap/Navbar";
@@ -14,13 +14,15 @@ function App() {
           <Navbar bg="dark" variant="dark">
             <Container>
               <LinkContainer to="/">
-                <Navbar.Brand>shoping well</Navbar.Brand>
+                <Navbar.Brand>
+                  <img src="/images/linkedin_banner_image_2.png" alt="shopping well"/>
+                </Navbar.Brand>
               </LinkContainer>
             </Container>
           </Navbar>
         </header>
         <main>
-          <Container>
+          <Container className="mt-3">
             <Routes>
               <Route path="/" element={<Home />}></Route>
               <Route path="/product/:slug" element={<Product />}></Route>

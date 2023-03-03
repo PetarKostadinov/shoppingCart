@@ -9,7 +9,7 @@ const data = {
             countMany: 10,
             brand: 'Bacardi',
             rating: 4.5,
-            numReviews: 10,
+            numReviews: 5,
             description: 'High quality rum from Puerto Rico'
         },
         {
@@ -18,7 +18,7 @@ const data = {
             category: 'Gin',
             image: '/images/Product-Hendricks-Gin_600x.webp',
             price: 100,
-            countMany: 10,
+            countMany: 8,
             brand: 'Hendrick\'s',
             rating: 4.5,
             numReviews: 10,
@@ -26,11 +26,11 @@ const data = {
         },
         {
             name: 'Jack Daniel\'s Single Barrel',
-            slug: 'jack Daniel\'s-single-barrel',
+            slug: 'jack-daniel\'s-single-barrel',
             category: 'Whiskey',
             image: '/images/jack-daniel-s-single-barrel-select-45.jpg',
             price: 100,
-            countMany: 10,
+            countMany: 0,
             brand: 'Jack Daniel\'s',
             rating: 3.5,
             numReviews: 10,
