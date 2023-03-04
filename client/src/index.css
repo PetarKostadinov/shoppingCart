@@ -17,7 +17,7 @@ main {
 
 .btn-primary {
   background-color: #1cc7e1;
-  color:#404040;
+  color: #404040;
 
 }
 
@@ -42,10 +42,15 @@ main {
   width: 100%;
   max-width: 400px;
 }
+
 .product-info {
   padding: 1rem;
 }
 
 .img-large {
   max-width: 100%;
+}
+
+.img-thumbnail {
+  height: 80px;
 }

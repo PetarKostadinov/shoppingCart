@@ -32,10 +32,16 @@
     3. message component
     4. util.js to define getError function
 
- 11.           
+11. Add To Cart Function
+    1. React Context  
+    2. Reducer
+    3. Store Provider
+    4. Add To Cart handler, click button        
 
-
-
+12. Create Cart Screen
+    1. two columns
+    2. display items
+    3. action column
 
 
 

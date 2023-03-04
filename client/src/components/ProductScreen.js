@@ -1,12 +1,13 @@
 import axios from 'axios';
-import React, { useEffect, useReducer } from 'react'
+import React, { useContext, useEffect, useReducer } from 'react'
 import { Badge, Button, Card, Col, ListGroup, Row } from 'react-bootstrap';
 import { Helmet } from 'react-helmet-async';
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import getError from '../util';
 import LoadingComponent from './LoadingComponent';
 import MessageComponent from './MessageComponent';
 import Rating from './Rating';
+import { Store } from './Store';
 
 
 const reducer = (state, action) => {
@@ -23,6 +24,7 @@ const reducer = (state, action) => {
 }
 
 function ProductScreen() {
+    const navigate = useNavigate();
 
     const params = useParams();
     const { slug } = params;
@@ -47,6 +49,22 @@ function ProductScreen() {
         fetchData();
 
     }, [slug]);
+
+    const { state, dispatch: ctxDispatch } = useContext(Store);
+    const { cart } = state;
+    const addToCartHandler = async () => {
+        const exists = cart.cartItems.find((x) => x._id === product._id);
+        const quantity = exists ? exists.quantity + 1 : 1;
+        const { data } = await axios.get(`/api/products/${product._id}`);
+
+        if (data.countMany < quantity) {
+            window.alert('Sorry. Product is out of stock')
+        }
+
+        ctxDispatch({ type: 'CART_ADD_ITEM', payload: { ...product, quantity } });
+
+        navigate('/cart');
+    };
 
     return loading ? (<LoadingComponent />)
         : error ? (<MessageComponent variant="danger">{error}</MessageComponent>)
@@ -88,7 +106,7 @@ function ProductScreen() {
                                     {product.countMany > 0
                                         && (<ListGroup.Item>
                                             <div className="d-grid">
-                                                <Button variant="primary">
+                                                <Button onClick={addToCartHandler} variant="primary">
                                                     AddTo Cart
                                                 </Button>
                                             </div>
