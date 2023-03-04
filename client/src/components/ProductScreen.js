@@ -3,6 +3,9 @@ import React, { useEffect, useReducer } from 'react'
 import { Badge, Button, Card, Col, ListGroup, Row } from 'react-bootstrap';
 import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom'
+import getError from '../util';
+import LoadingComponent from './LoadingComponent';
+import MessageComponent from './MessageComponent';
 import Rating from './Rating';
 
 
@@ -37,7 +40,7 @@ function ProductScreen() {
                 const result = await axios.get(`/api/products/slug/${slug}`);
                 dispatch({ type: 'FETCH_SUCCESS', payload: result.data })
             } catch (err) {
-                dispatch({ type: 'FETCH_FAIL', payload: err.message })
+                dispatch({ type: 'FETCH_FAIL', payload: getError(err) })
             }
         };
 
@@ -45,9 +48,8 @@ function ProductScreen() {
 
     }, [slug]);
 
-    return loading ?
-        (<div>Loading &hellip;</div>)
-        : error ? (<div>{error}</div>)
+    return loading ? (<LoadingComponent />)
+        : error ? (<MessageComponent variant="danger">{error}</MessageComponent>)
             : (<div>
                 <Row>
                     <Col md={6}><img className="img-large" src={product.image} alt={product.name} /></Col>
