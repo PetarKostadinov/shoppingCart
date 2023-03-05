@@ -45,6 +45,11 @@
     4. clickhandler for dec and incr item count
     5. remove item
     6. checkout
+
+13. Registration
+    1. register form
+    2. add email
+    3. add register button    
     
 
 

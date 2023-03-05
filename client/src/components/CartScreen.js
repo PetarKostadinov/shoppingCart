@@ -29,7 +29,7 @@ function CartScreen() {
     }
 
     const checkoutHandler = () => {
-        navigate('/signin?redirect=/shipping');
+        navigate('/login?redirect=/shipping');
     }
 
     return (
@@ -102,7 +102,12 @@ function CartScreen() {
                                 </ListGroup.Item>
                                 <ListGroup.Item>
                                     <div className="d-grid">
-                                        <Button variant="primary" type="button" disabled={cartItems.length === 0}>
+                                        <Button 
+                                        variant="primary" 
+                                        type="button" 
+                                        onClick={checkoutHandler}
+                                        disabled={cartItems.length === 0}
+                                        >
                                             Proceed To Checkout
                                         </Button>
                                     </div>
