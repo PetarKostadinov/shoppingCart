@@ -42,6 +42,10 @@
     1. two columns
     2. display items
     3. action column
+    4. clickhandler for dec and incr item count
+    5. remove item
+    6. checkout
+    
 
 
 
