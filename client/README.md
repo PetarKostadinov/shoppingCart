@@ -46,11 +46,12 @@
     5. remove item
     6. checkout
 
-13. Registration
-    1. register form
+13. Login
+    1. loginform
     2. add email
-    3. add register button    
+    3. add login button    
     
+14. Conect To Mongo Database
 
 
 
