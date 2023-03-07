@@ -53,6 +53,21 @@
     
 14. Conect To Mongo Database
 
+15. Product model
+
+16. User model
+
+17. Route in server.js
+
+18. Seed Sample Users
+    1. create user model
+    2. sedd sample users
+    3. create user routes
+
+19. Create Login Backend API
+    1. npm i jswebtoken
+    2. define generateToken    
+
 
 
 

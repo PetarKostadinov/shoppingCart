@@ -1,7 +1,23 @@
+import bcrypt from 'bcryptjs';
+
 const data = {
+    users: [
+        {
+            username: "Petar",
+            email: "peatarkostadinov30@gmail.com",
+            password: bcrypt.hashSync("123456"),
+            isAdmin: true
+        },
+        {
+            username: "John",
+            email: "example@gmail.com",
+            password: bcrypt.hashSync("123456"),
+            isAdmin: false
+        }
+    ],
     products: [
         {
-            _id: '1',
+           
             name: 'Bacardi Oro',
             slug: 'bacardi-oro',
             category: 'Rum',
@@ -14,7 +30,7 @@ const data = {
             description: 'High quality rum from Puerto Rico'
         },
         {
-            _id: '2',
+           
             name: 'Hendrick\'s Gin',
             slug: 'hendrick\'s-gin',
             category: 'Gin',
@@ -27,7 +43,7 @@ const data = {
             description: 'High quality gin from Scotland'
         },
         {
-            _id: '3',
+           
             name: 'Jack Daniel\'s Single Barrel',
             slug: 'jack-daniel\'s-single-barrel',
             category: 'Whiskey',
@@ -40,7 +56,7 @@ const data = {
             description: 'High quality Tennessee whiskey'
         },
         {
-            _id: '4',
+           
             name: 'Veuve Clicquot Yellow Label',
             slug: 'veuve-clicquot-yellow-label',
             category: 'Champagne',
