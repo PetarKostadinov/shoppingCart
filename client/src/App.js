@@ -12,6 +12,7 @@ import { Store } from "./components/Store";
 import CartScreen from "./components/CartScreen";
 import ProductScreen from "./components/ProductScreen";
 import Login from "./components/Login";
+import ShippingInfo from "./components/ShippingInfo";
 
 function App() {
   const { state, dispatch: ctxDispatch } = useContext(Store);
@@ -21,6 +22,7 @@ function App() {
   const logoutHandler = () => {
     ctxDispatch({ type: 'USER_LOGOUT' });
     localStorage.removeItem('userInfo');
+    localStorage.removeItem('shippingInfo');
   }
 
   return (
@@ -76,6 +78,7 @@ function App() {
               <Route path="/" element={<Home />}></Route>
               <Route path="/cart" element={<CartScreen />}></Route>
               <Route path="/login" element={<Login />}></Route>
+              <Route path="/shipping" element={<ShippingInfo />} ></Route>
               <Route path="/product/:slug" element={<ProductScreen />}></Route>
             </Routes>
           </Container>
