@@ -7,26 +7,33 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Store } from './Store';
 import { toast } from 'react-toastify';
 
-function Login() {
+function Register() {
     const navigate = useNavigate();
     const { search } = useLocation();
     const redirectInUrl = new URLSearchParams(search).get('redirect');
     const redirect = redirectInUrl ? redirectInUrl : '/';
 
+    const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [repass, setRepass] = useState('');
     const { state, dispatch: ctxDispatch } = useContext(Store);
     const {userInfo} = state;
 
     const submitHandler = async (e) => {
         e.preventDefault();
+        if(password !== repass) {
+            toast.error('Passwords don\'t match');
+            return;
+        }
         try {
-            const { data } = await Axios.post('/api/users/login', {
+            const { data } = await Axios.post('/api/users/register', {
+                username,
                 email,
                 password
             });
 
-            ctxDispatch({ type: 'USER_LOGIN', payload: data })
+            ctxDispatch({ type: 'USER_REGISTER', payload: data })
             localStorage.setItem('userInfo', JSON.stringify(data));
             navigate(redirect || '/');
 
@@ -45,10 +52,17 @@ function Login() {
     return (
         <Container className="small-container">
             <Helmet>
-                <title>Login</title>
+                <title>Register</title>
             </Helmet>
-            <h1 className="my-3">Login</h1>
+            <h1 className="my-3">Register</h1>
             <Form onSubmit={submitHandler}>
+                <Form.Group className="mb-3" controlid="username">
+                <Form.Label>Username</Form.Label>
+                    <Form.Control
+                        required
+                        onChange={(e) => setUsername(e.target.value)}
+                    ></Form.Control>
+                </Form.Group>
                 <Form.Group className="mb-3" controlid="email">
                     <Form.Label>Email</Form.Label>
                     <Form.Control
@@ -58,23 +72,31 @@ function Login() {
                     ></Form.Control>
                 </Form.Group>
                 <Form.Group className="mb-3" controlid="password">
-                    <Form.Label>Pasword</Form.Label>
+                    <Form.Label>Password</Form.Label>
                     <Form.Control
                         type="password"
                         required
                         onChange={(e) => setPassword(e.target.value)}
                     ></Form.Control>
                 </Form.Group>
+                <Form.Group className="mb-3" controlid="repass">
+                    <Form.Label>Repeat Password</Form.Label>
+                    <Form.Control
+                        type="password"
+                        required
+                        onChange={(e) => setRepass(e.target.value)}
+                    ></Form.Control>
+                </Form.Group>
                 <div className="mb-3">
-                    <Button type="submit">Login</Button>
+                    <Button type="submit">Register</Button>
                 </div>
                 <div className="mb-3">
-                    No Registration ?{' '}
-                    <Link to={`/register?redirect=${redirect}`}>Register Here</Link>
+                    Already have an account ?{' '}
+                    <Link to={`/login?redirect=${redirect}`}>Login Here</Link>
                 </div>
             </Form>
         </Container>
     )
 }
 
-export default Login
+export default Register

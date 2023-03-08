@@ -13,6 +13,7 @@ import CartScreen from "./components/CartScreen";
 import ProductScreen from "./components/ProductScreen";
 import Login from "./components/Login";
 import ShippingInfo from "./components/ShippingInfo";
+import Register from "./components/Register";
 
 function App() {
   const { state, dispatch: ctxDispatch } = useContext(Store);
@@ -75,11 +76,12 @@ function App() {
         <main>
           <Container className="mt-3">
             <Routes>
-              <Route path="/" element={<Home />}></Route>
-              <Route path="/cart" element={<CartScreen />}></Route>
-              <Route path="/login" element={<Login />}></Route>
-              <Route path="/shipping" element={<ShippingInfo />} ></Route>
-              <Route path="/product/:slug" element={<ProductScreen />}></Route>
+              <Route path="/" element={<Home />} />
+              <Route path="/cart" element={<CartScreen />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/shipping" element={<ShippingInfo />} />
+              <Route path="/product/:slug" element={<ProductScreen />} />
             </Routes>
           </Container>
         </main>

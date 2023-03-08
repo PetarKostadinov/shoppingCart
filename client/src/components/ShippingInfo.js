@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import { Button, Form } from 'react-bootstrap'
 import { Helmet } from 'react-helmet-async'
 import { useNavigate } from 'react-router-dom';
-import Checkout from './Checkout';
+import CheckoutSteps from './CheckoutSteps';
 import { Store } from './Store';
 
 function ShippingInfo() {
@@ -53,11 +53,11 @@ function ShippingInfo() {
             <Helmet>
                 <title>Shipping Information</title>
             </Helmet>
-            <Checkout step1 step2></Checkout>
+            <CheckoutSteps step1 step2></CheckoutSteps>
             <div className="container small-container">
-                <h1 className="my-3" controlId="fullName">Shipping Information</h1>
+                <h1 className="my-3" controlid="fullName">Shipping Information</h1>
                 <Form onSubmit={submitHandler}>
-                    <Form.Group className="mb-3" controlId="fullName">
+                    <Form.Group className="mb-3" controlid="fullName">
                         <Form.Label>Full Name</Form.Label>
                         <Form.Control
                             value={fullName}

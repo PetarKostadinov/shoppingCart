@@ -68,7 +68,7 @@
     1. npm i jswebtoken
     2. define generateToken    
 
-
+20. Register - form, handle, backend api
 
 
 
