@@ -14,6 +14,7 @@ import ProductScreen from "./components/ProductScreen";
 import Login from "./components/Login";
 import ShippingInfo from "./components/ShippingInfo";
 import Register from "./components/Register";
+import Payment from "./components/Payment";
 
 function App() {
   const { state, dispatch: ctxDispatch } = useContext(Store);
@@ -24,6 +25,7 @@ function App() {
     ctxDispatch({ type: 'USER_LOGOUT' });
     localStorage.removeItem('userInfo');
     localStorage.removeItem('shippingInfo');
+    localStorage.removeItem('paymentMethod');
   }
 
   return (
@@ -81,6 +83,7 @@ function App() {
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               <Route path="/shipping" element={<ShippingInfo />} />
+              <Route path="/payment" element={<Payment />} />
               <Route path="/product/:slug" element={<ProductScreen />} />
             </Routes>
           </Container>

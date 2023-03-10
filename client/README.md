@@ -70,6 +70,8 @@
 
 20. Register - form, handle, backend api
 
+21. Implement payment method - imput form, handle submit
+
 
 
 
