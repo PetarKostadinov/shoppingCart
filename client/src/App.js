@@ -15,6 +15,7 @@ import Login from "./components/Login";
 import ShippingInfo from "./components/ShippingInfo";
 import Register from "./components/Register";
 import Payment from "./components/Payment";
+import Order from "./components/Order";
 
 function App() {
   const { state, dispatch: ctxDispatch } = useContext(Store);
@@ -84,6 +85,7 @@ function App() {
               <Route path="/register" element={<Register />} />
               <Route path="/shipping" element={<ShippingInfo />} />
               <Route path="/payment" element={<Payment />} />
+              <Route path="/order" element={<Order />} />
               <Route path="/product/:slug" element={<ProductScreen />} />
             </Routes>
           </Container>

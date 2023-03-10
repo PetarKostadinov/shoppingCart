@@ -10,6 +10,7 @@ function Payment() {
     const { state, dispatch: ctxDispatch } = useContext(Store);
     const { cart: { shippingInfo, paymentMethod } } = state;
     const [paymentName, setPayment] = useState(paymentMethod || 'PayPal');
+    
     useEffect(() => {
         if (!shippingInfo.address) {
             navigate('/shipping')

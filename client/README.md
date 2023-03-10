@@ -72,6 +72,11 @@
 
 21. Implement payment method - imput form, handle submit
 
+22. Create OrderPage
+    1. Show cart items
+    2. handle order action
+    3. ored create api
+
 
 
 
