@@ -1,12 +1,31 @@
-import React, { useContext, useEffect } from 'react'
+import  Axios  from 'axios'
+import React, { useContext, useEffect, useReducer } from 'react'
 import { Button, Card, Col, ListGroup, Row } from 'react-bootstrap'
 import { Helmet } from 'react-helmet-async'
 import { Link, useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
+import getError from '../util'
 import Checkout from './CheckoutSteps'
+import LoadingComponent from './LoadingComponent'
 import { Store } from './Store'
+
+
+const reducer = (state, action) => {
+    switch (action.type) {
+        case 'CREATE_REQUEST':
+            return { ...state, loading: true }
+        case 'CREATE_SUCCESS':
+            return { ...state, loading: false }
+        case 'CREATE_FAIL':
+            return { ...state, loading: false }
+        default:
+            return state;
+    }
+}
 
 function Order() {
     const navigate = useNavigate();
+    const [{ loading }, dispatch] = useReducer(reducer, { loading: false });
     const { state, dispatch: ctxDispatch } = useContext(Store);
     const { cart, userInfo } = state;
 
@@ -18,7 +37,36 @@ function Order() {
     cart.totalPrice = cart.itemsPrice + cart.shippingPrice + cart.taxPrice;
 
     const placeOrderHandler = async () => {
+        try {
+            dispatch({ type: 'CREATE_REQUEST' })
 
+            const { data } = await Axios.post(
+                '/api/orders',
+                {
+                    orderItems: cart.cartItems,
+                    shippingInfo: cart.shippingInfo,
+                    paymentMethod: cart.paymentMethod,
+                    itemsPrice: cart.itemsPrice,
+                    shippingPrice: cart.shippingPrice,
+                    taxPrice: cart.taxPrice,
+                    totalPrice: cart.totalPrice
+                },
+                {
+                    headers: {
+                        authorization: `Bearer ${userInfo.token}`
+                    }
+                }
+            );
+            ctxDispatch({ type: 'CART_CLEAR' });
+            dispatch({ type: 'CREATE_SUCCESS' });
+            localStorage.removeItem('cartItems');
+            navigate(`/order/${data.order._id}`);
+
+        } catch (err) {
+            dispatch({ type: 'CREATE_FAIL' });
+            console.log(err)
+            toast.error(getError(err));
+        }
     };
 
     useEffect(() => {
@@ -118,6 +166,7 @@ function Order() {
                                         Place Order
                                     </Button>
                                 </div>
+                                {loading && <LoadingComponent></LoadingComponent>}
                             </ListGroup.Item>
                         </Card.Body>
                     </Card>
@@ -127,4 +176,4 @@ function Order() {
     )
 }
 
-export default Order
+export default Order;
