@@ -77,7 +77,9 @@
     2. handle order action
     3. ored create api
 
-23. Implement Place order Action - handle action, create api    
+23. Implement Place order Action - handle action, create api   
+
+24. Create Order Screen- create backend api, fetch order api, show order info in 2 columns
 
 
 
