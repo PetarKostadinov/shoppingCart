@@ -17,17 +17,20 @@ import Register from "./components/Register";
 import Payment from "./components/Payment";
 import Order from "./components/Order";
 import OrderSummary from "./components/OrderSummary";
+import OrderHistory from "./components/OrderHistory";
+import Profile from "./components/Profile";
 
 function App() {
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { cart, userInfo } = state;
-  console.log(userInfo)
+
 
   const logoutHandler = () => {
     ctxDispatch({ type: 'USER_LOGOUT' });
     localStorage.removeItem('userInfo');
     localStorage.removeItem('shippingInfo');
     localStorage.removeItem('paymentMethod');
+    window.location.href = '/login';
   }
 
   return (
@@ -35,45 +38,48 @@ function App() {
       <div className="d-flex flex-column site-container">
         <ToastContainer position="bottom-center" limit={1}></ToastContainer>
         <header>
-          <Navbar bg="dark" variant="dark">
+          <Navbar bg="dark" variant="dark" expand="lg">
             <Container>
               <LinkContainer to="/">
                 <Navbar.Brand>
                   <img src="/images/linkedin_banner_image_2.png" alt="shopping well" />
                 </Navbar.Brand>
               </LinkContainer>
-              <Nav>
-                <Link to="/cart" className="nav-link">
-                  Cart
-                  {cart.cartItems.length > 0 && (
-                    <Badge pill bg="danger">
-                      {cart.cartItems.reduce((a, c) => a + c.quantity, 0)}
-                    </Badge>
-                  )}
-                </Link>
-                {userInfo ? (
-                  <NavDropdown title={userInfo.username} id="basic-nav-dropdown">
-                    <LinkContainer to="/profile">
-                      <NavDropdown.Item>User Profile</NavDropdown.Item>
-                    </LinkContainer>
-                    <LinkContainer to="/orderhistory">
-                      <NavDropdown.Item>Order History</NavDropdown.Item>
-                    </LinkContainer>
-                    <NavDropdown.Divider />
-                    <Link
-                      className="dropdown-item"
-                      to="#logout"
-                      onClick={logoutHandler}
-                    >
-                      Logout
-                    </Link>
-                  </NavDropdown>
-                ) : (
-                  <Link className="nav-link" to="/login">
-                    Login
+              <Navbar.Toggle aria-controls="basic-navbar-nav" />
+              <Navbar.Collapse id="basic-navbar-nav">
+                <Nav className="me-auto w-100 justify-content-end" >
+                  <Link to="/cart" className="nav-link">
+                    Cart
+                    {cart.cartItems.length > 0 && (
+                      <Badge pill bg="danger">
+                        {cart.cartItems.reduce((a, c) => a + c.quantity, 0)}
+                      </Badge>
+                    )}
                   </Link>
-                )}
-              </Nav>
+                  {userInfo ? (
+                    <NavDropdown title={userInfo.username} id="basic-nav-dropdown">
+                      <LinkContainer to="/profile">
+                        <NavDropdown.Item>User Profile</NavDropdown.Item>
+                      </LinkContainer>
+                      <LinkContainer to="/orderhistory">
+                        <NavDropdown.Item>Order History</NavDropdown.Item>
+                      </LinkContainer>
+                      <NavDropdown.Divider />
+                      <Link
+                        className="dropdown-item"
+                        to="#logout"
+                        onClick={logoutHandler}
+                      >
+                        Logout
+                      </Link>
+                    </NavDropdown>
+                  ) : (
+                    <Link className="nav-link" to="/login">
+                      Login
+                    </Link>
+                  )}
+                </Nav>
+              </Navbar.Collapse>
             </Container>
           </Navbar>
         </header>
@@ -83,11 +89,13 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/cart" element={<CartScreen />} />
               <Route path="/login" element={<Login />} />
+              <Route path="/profile" element={<Profile />} />
               <Route path="/register" element={<Register />} />
               <Route path="/shipping" element={<ShippingInfo />} />
               <Route path="/payment" element={<Payment />} />
               <Route path="/order" element={<Order />} />
               <Route path="/order/:id" element={<OrderSummary />} />
+              <Route path="/orderhistory" element={<OrderHistory />} />
               <Route path="/product/:slug" element={<ProductScreen />} />
             </Routes>
           </Container>
