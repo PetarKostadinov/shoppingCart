@@ -92,6 +92,9 @@
     8. implement onApprove payment function 
     9. create pay order api in backend
 
+26. Publish render.com  
+  
+
 
 
 
