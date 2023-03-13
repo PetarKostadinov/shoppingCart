@@ -10,7 +10,7 @@ import { Badge, Button, Nav, NavDropdown } from "react-bootstrap";
 import { useContext, useEffect, useState } from "react";
 import { Store } from "./components/Store";
 import CartScreen from "./components/CartScreen";
-import ProductScreen from "./components/ProductScreen";
+import ProductPage from "./components/ProductPage";
 import Login from "./components/Login";
 import ShippingInfo from "./components/ShippingInfo";
 import Register from "./components/Register";
@@ -21,7 +21,8 @@ import OrderHistory from "./components/OrderHistory";
 import Profile from "./components/Profile";
 import getError from "./util";
 import axios from "axios";
-import Search from "./components/Search";
+import SearchInput from "./components/SearchInput";
+import SearchPage from "./components/SearchPage";
 
 function App() {
   const { state, dispatch: ctxDispatch } = useContext(Store);
@@ -74,7 +75,7 @@ function App() {
               </LinkContainer>
               <Navbar.Toggle aria-controls="basic-navbar-nav" />
               <Navbar.Collapse id="basic-navbar-nav">
-                <Search />
+                <SearchInput />
                 <Nav className="me-auto w-100 justify-content-end" >
                   <Link to="/cart" className="nav-link">
                     Cart
@@ -137,6 +138,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/cart" element={<CartScreen />} />
+              <Route path="/search" element={<SearchPage />} />
               <Route path="/login" element={<Login />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/register" element={<Register />} />
@@ -145,7 +147,7 @@ function App() {
               <Route path="/order" element={<Order />} />
               <Route path="/order/:id" element={<OrderSummary />} />
               <Route path="/orderhistory" element={<OrderHistory />} />
-              <Route path="/product/:slug" element={<ProductScreen />} />
+              <Route path="/product/:slug" element={<ProductPage />} />
             </Routes>
           </Container>
         </main>
