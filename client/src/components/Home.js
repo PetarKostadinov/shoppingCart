@@ -51,9 +51,11 @@ function Home() {
 
     return (
         <div>
+            
             <Helmet>
                 <title>shopping well</title>
             </Helmet>
+            
             <h1>Products</h1>
             <div className="products">
                 {loading ? (

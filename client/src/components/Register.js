@@ -1,6 +1,6 @@
 
 import React, { useContext, useEffect, useState } from 'react';
-import Axios from 'axios';
+import axios from 'axios';
 import { Button, Container, Form } from 'react-bootstrap';
 import { Helmet } from 'react-helmet-async';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
@@ -10,6 +10,7 @@ import { toast } from 'react-toastify';
 function Register() {
     const navigate = useNavigate();
     const { search } = useLocation();
+    
     const redirectInUrl = new URLSearchParams(search).get('redirect');
     const redirect = redirectInUrl ? redirectInUrl : '/';
 
@@ -27,7 +28,7 @@ function Register() {
             return;
         }
         try {
-            const { data } = await Axios.post('/api/users/register', {
+            const { data } = await axios.post('/api/users/register', {
                 username,
                 email,
                 password

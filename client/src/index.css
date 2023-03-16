@@ -5,6 +5,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+ 
 }
 
 .site-container {
@@ -13,9 +14,12 @@ body {
 
 main {
   flex: 1;
+  
+
 }
 
-.btn-primary, .btn-outline-primary {
+.btn-primary,
+.btn-outline-primary {
   background-color: #1cc7e1;
   color: #404040;
 
@@ -70,7 +74,7 @@ main {
 }
 
 /* SIDEBAR */
-.side-navbar{
+.side-navbar {
   width: 240px;
   height: 100%;
   position: absolute;
@@ -93,4 +97,13 @@ main {
 
 .text-bold {
   font-weight: bold;
+}
+
+.expand{
+  min-height: 70vh;
+}
+
+a {
+  text-decoration: none;
+  
 }

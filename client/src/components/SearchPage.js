@@ -124,15 +124,15 @@ function SearchPage() {
 
 
     return (
-        <div>
+        <div className="h-100">
+            <Row>
             <Helmet>
                 <title>Search Products</title>
             </Helmet>
-            <Row>
                 <Col md={3}>
                     <h3>Department</h3>
                     <div>
-                        <ul>
+                        <ul className="list-unstyled">
                             <li>
                                 <Link
                                     className={'all' === category ? 'text-bold' : ''}
@@ -155,7 +155,7 @@ function SearchPage() {
                     </div>
                     <div>
                         <h3>Price</h3>
-                        <ul>
+                        <ul className="list-unstyled">
                             <li>
                                 <Link
                                     className={'all' === price ? 'text-bold' : ''}
@@ -178,7 +178,7 @@ function SearchPage() {
                     </div>
                     <div>
                         <h3>Avg. Customer Review</h3>
-                        <ul>
+                        <ul className="list-unstyled">
                             {ratings.map((r) => (
                                 <li key={r.name}>
                                     <Link
@@ -207,6 +207,7 @@ function SearchPage() {
                         <MessageComponent variant="danger"></MessageComponent>
                     ) : (
                         <>
+                        <h1>Searched Products</h1>
                             <Row className="justify-content-btween mb-3">
                                 <Col md={6}>
                                     <div>

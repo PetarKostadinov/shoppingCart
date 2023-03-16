@@ -1,11 +1,14 @@
 
 import React, { useContext, useEffect, useState } from 'react';
-import Axios from 'axios';
+import axios from 'axios';
 import { Button, Container, Form } from 'react-bootstrap';
 import { Helmet } from 'react-helmet-async';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Store } from './Store';
 import { toast } from 'react-toastify';
+
+
+
 
 function Login() {
     const navigate = useNavigate();
@@ -21,7 +24,7 @@ function Login() {
     const submitHandler = async (e) => {
         e.preventDefault();
         try {
-            const { data } = await Axios.post('/api/users/login', {
+            const { data } = await axios.post('/api/users/login', {
                 email,
                 password
             });

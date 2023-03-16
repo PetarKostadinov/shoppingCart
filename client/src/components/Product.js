@@ -37,7 +37,7 @@ function Product(props) {
                 <img src={product.image} className="card-img-top" alt={product.name}></img>
             </Link>
             <Card.Body>
-                <Link to={`/product/${product.slug}`}>
+                <Link className="link-none-underline" to={`/product/${product.slug}`}>
                     <Card.Title>
                         {product.name}
                     </Card.Title>
