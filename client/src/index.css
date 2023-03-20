@@ -5,8 +5,25 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
- 
+  background-image: url(https://images.squarespace-cdn.com/content/v1/531e1ed3e4b07c42c34b7a55/1660088222104-RP7TBDR7BCZ1NTV23UQR/Screen+Shot+2022-08-09+at+7.28.46+PM.png?format=2500w);
+  background-size: cover;
+  background-position: center center;
+  background-attachment: fixed;
 }
+
+.nav-link-class:hover{
+  color:  white !important;
+  text-decoration: underline;
+}
+
+.hov:hover{
+  color: white !important;
+  text-decoration: underline;
+}
+.hov, .nav-link-class{
+  color:  #1cc7e1;
+}
+
 
 .site-container {
   min-height: 100vh;
@@ -14,8 +31,6 @@ body {
 
 main {
   flex: 1;
-  
-
 }
 
 .btn-primary,
@@ -25,7 +40,10 @@ main {
 
 }
 
+.card{
+  background-color: rgba(53, 50, 50, 0.8);
 
+}
 .products {
   display: flex;
   flex-wrap: wrap;
@@ -40,11 +58,23 @@ main {
 .product {
   border: 1px #404040 solid;
   margin: 1rem;
+
+}
+
+.md-4 {
+  transition: all 0.4s;
+  max-height: 600px;
+}
+
+.md-4:hover {
+  transform: scale(1.1);
+  cursor: pointer;
 }
 
 .product img {
   width: 100%;
   max-width: 400px;
+  
 }
 
 .product-info {
@@ -52,15 +82,17 @@ main {
 }
 
 .img-large {
-  max-width: 100%;
+  max-width: 60%;
+ 
 }
 
 .img-thumbnail {
-  height: 80px;
+  height: 60px;
 }
 
 .small-container {
   max-width: 600px;
+  
 }
 
 .checkout-steps>div {
@@ -75,11 +107,11 @@ main {
 
 /* SIDEBAR */
 .side-navbar {
-  width: 240px;
+  width: 140px;
   height: 100%;
   position: absolute;
   left: -300px;
-  background-color: #100901;
+  background-color: rgba(53, 50, 50, 0.8);
   transition: 0.5s;
 }
 
@@ -99,11 +131,11 @@ main {
   font-weight: bold;
 }
 
-.expand{
+.expand {
   min-height: 70vh;
 }
 
 a {
   text-decoration: none;
-  
+
 }

@@ -40,7 +40,7 @@ function Header() {
     return (
         <>
             <header>
-                <Navbar bg="dark" variant="dark" expand="lg">
+                <Navbar  variant="dark" expand="lg" style={{ backgroundColor: 'rgba(53, 50, 50, 0.8)' }}>
                     <Container>
                         <Button
                             variant="dark"
@@ -120,9 +120,9 @@ function Header() {
                         <strong>Categories</strong>
                     </Nav.Item>
                     {categories.map((category) => (
-                        <Nav.Item key={category}>
+                        <Nav.Item  key={category}>
                             <LinkContainer to={`/search?category=${category}`} onClick={() => setSideBarIsOpen(false)}>
-                                <Nav.Link>{category}</Nav.Link>
+                                <Nav.Link className="nav-link-class">{category}</Nav.Link>
                             </LinkContainer>
                         </Nav.Item>
                     ))}

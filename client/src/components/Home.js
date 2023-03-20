@@ -50,29 +50,33 @@ function Home() {
     }, []);
 
     return (
-        <div>
-            
-            <Helmet>
-                <title>shopping well</title>
-            </Helmet>
-            
-            <h1>Products</h1>
-            <div className="products">
-                {loading ? (
-                    <LoadingComponent />
-                ) : error ? (
-                    <MessageComponent variant="danger">{error}</MessageComponent>
-                ) : (
-                    <Row>
-                        {products.map(x => (
-                            <Col key={x.slug} sm={6} md={4} lg={4} className="md-3">
-                                <Product product={x}></Product>
-                            </Col>
-                        ))}
-                    </Row>
-                )}
+        <>
+            {/* <div>
+                <img className="mw-100" src="/images/Homepage-Hero-Desktop-Slot-9.jpg" alt="Home Page" />
+            </div> */}
+            <div>
+                <Helmet>
+                    <title>shopping well</title>
+                </Helmet>
+
+                <h1>Products</h1>
+                <div className="products">
+                    {loading ? (
+                        <LoadingComponent />
+                    ) : error ? (
+                        <MessageComponent variant="danger">{error}</MessageComponent>
+                    ) : (
+                        <Row className="row pt-4 gy-4">
+                            {products.map(x => (
+                                <Col key={x.slug} sm={6} md={5} lg={4} className="md-4">
+                                    <Product product={x}></Product>
+                                </Col>
+                            ))}
+                        </Row>
+                    )}
+                </div>
             </div>
-        </div>
+        </>
     )
 }
 

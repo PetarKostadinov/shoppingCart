@@ -47,15 +47,15 @@ function CartScreen() {
                     ) : (
                         <ListGroup>
                             {cartItems.map((x) => (
-                                <ListGroup.Item key={x._id}>
-                                    <Row className="align-items-cebtre">
+                                <ListGroup.Item style={{ backgroundColor: 'rgba(53, 50, 50, 0.8)' }} key={x._id}>
+                                    <Row className="align-items-center">
                                         <Col md={4}>
                                             <img
                                                 src={x.image}
                                                 alt={x.name}
                                                 className="img-fluid rounded img-thumbnail"
                                             ></img>{' '}
-                                            <Link to={`/product/${x.slug}`}>{x.name}</Link>
+                                            <Link className="hov" to={`/product/${x.slug}`}>{x.name}</Link>
                                         </Col>
                                         <Col md={3}>
                                             <Button
@@ -65,7 +65,7 @@ function CartScreen() {
                                             >
                                                 <i className="fas fa-minus-circle"></i>
                                             </Button>{' '}
-                                            <span>{x.quantity}</span>{' '}
+                                            <span className="text-white">{' ' + x.quantity + ' '}</span>{' '}
                                             <Button
                                                 variant="light"
                                                 onClick={() => updateCartHandler(x, x.quantity + 1)}
@@ -74,7 +74,7 @@ function CartScreen() {
                                                 <i className="fas fa-plus-circle"></i>
                                             </Button>{' '}
                                         </Col>
-                                        <Col md={3}>${x.price}</Col>
+                                        <Col className="text-white" md={3}>${x.price}</Col>
                                         <Col md={2}>
                                             <Button
                                                 onClick={() => removeItemHandler(x)}

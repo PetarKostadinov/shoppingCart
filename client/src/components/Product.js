@@ -32,12 +32,12 @@ function Product(props) {
 
 
     return (
-        <Card>
+        <Card className="card h-100">
             <Link to={`/product/${product.slug}`}>
                 <img src={product.image} className="card-img-top" alt={product.name}></img>
             </Link>
             <Card.Body>
-                <Link className="link-none-underline" to={`/product/${product.slug}`}>
+                <Link className="link-none-underline hov" to={`/product/${product.slug}`}>
                     <Card.Title>
                         {product.name}
                     </Card.Title>

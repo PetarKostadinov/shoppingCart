@@ -124,7 +124,7 @@ function OrderSummary() {
                         <title>Order {orderId}</title>
                     </Helmet>
                     <h1 className="my-3">Order {orderId}</h1>
-                    <Row>
+                    <Row className="text-white">
                         <Col md={8}>
                             <Card className="mb-3">
                                 <Card.Body>
@@ -164,7 +164,7 @@ function OrderSummary() {
                                     <Card.Title>Items</Card.Title>
                                     <ListGroup variant="flush">
                                         {order.orderItems.map((item) => (
-                                            <ListGroup.Item key={item._id} >
+                                            <ListGroup.Item style={{ backgroundColor: 'rgba(53, 50, 50, 0.8)' }} key={item._id} >
                                                 <Row className="align-items-center">
                                                     <Col md={6}>
                                                         <img
@@ -172,12 +172,12 @@ function OrderSummary() {
                                                             alt={item.name}
                                                             className="img-fluid rounded img-thumbnail"
                                                         ></img>{' '}
-                                                        <Link to={`/product/${item.slug}`}>{item.name}</Link>
+                                                        <Link className="hov" to={`/product/${item.slug}`}>{item.name}</Link>
                                                     </Col>
                                                     <Col md={3}>
-                                                        <span>{item.quantity}</span>
+                                                        <span className="text-white">{item.quantity}</span>
                                                     </Col>
-                                                    <Col md={3}>${item.price}</Col>
+                                                    <Col className="text-white" md={3}>${item.price}</Col>
                                                 </Row>
                                             </ListGroup.Item>
                                         ))}
