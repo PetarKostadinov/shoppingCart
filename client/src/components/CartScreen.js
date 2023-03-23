@@ -41,7 +41,7 @@ function CartScreen() {
             <Row>
                 <Col md={8}>
                     {cartItems.length === 0 ? (
-                        <MessageComponent>
+                        <MessageComponent >
                             Cart is empty. <Link to="/">Go Shoping</Link>
                         </MessageComponent>
                     ) : (

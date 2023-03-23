@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useContext, useEffect, useReducer } from 'react'
+import React, { useContext, useEffect, useReducer, useState } from 'react'
 import { Badge, Button, Card, Col, ListGroup, Row } from 'react-bootstrap';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate, useParams } from 'react-router-dom'
@@ -29,7 +29,8 @@ function ProductScreen() {
     const params = useParams();
     const { slug } = params;
 
-    const [{ loading, error, product }, dispatch] = useReducer(reducer, {
+    const [{ loading, error, product, allProducts }, dispatch] = useReducer(reducer, {
+        allProducts: [],
         product: [],
         loading: true,
         error: ''
@@ -51,7 +52,8 @@ function ProductScreen() {
     }, [slug]);
 
     const { state, dispatch: ctxDispatch } = useContext(Store);
-    const { cart } = state;
+    const { cart, userInfo } = state;
+
     const addToCartHandler = async () => {
         const exists = cart.cartItems.find((x) => x._id === product._id);
         const quantity = exists ? exists.quantity + 1 : 1;
@@ -65,6 +67,19 @@ function ProductScreen() {
 
         navigate('/cart');
     };
+
+/////DELETE   -   EDIT
+
+    const deleteHandler = async () => {
+        
+       await axios.delete(`/api/products/${product._id}`)
+       ctxDispatch({type: 'CART_REMOVE_ITEM', payload: product});
+       navigate('/');
+    }
+
+    const editHandler = async () => {
+
+    }
 
     return loading ? (<LoadingComponent />)
         : error ? (<MessageComponent variant="danger">{error}</MessageComponent>)
@@ -81,7 +96,15 @@ function ProductScreen() {
                             <ListGroup.Item><Rating rating={product.rating} numReviews={product.numReviews}></Rating></ListGroup.Item>
                             <ListGroup.Item>Price: ${product.price}</ListGroup.Item>
                             <ListGroup.Item>Description: <p>{product.description}</p></ListGroup.Item>
+                            {userInfo && userInfo.isAdmin && (
+                                <ListGroup.Item className="align-center">
+                                    <Button onClick={editHandler}>Edit</Button>{' '}
+
+                                    <Button className="button-delete" onClick={deleteHandler}>Delete</Button>
+                                </ListGroup.Item>
+                            )}
                         </ListGroup>
+
                     </Col>
                     <Col md={3}>
                         <Card>

@@ -1,5 +1,6 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Home from "./components/Home";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Container from "react-bootstrap/Container";
 import CartScreen from "./components/CartScreen";
@@ -18,7 +19,8 @@ import DashboardPage from "./components/DashboardPage";
 import AdminRoute from "./components/AdminRoute";
 import Header from "./components/Header";
 import { useState } from "react";
-import { ToastContainer } from "react-bootstrap";
+
+import CreateItem from "./components/CreateItem";
 
 function App() {
 
@@ -31,7 +33,7 @@ function App() {
         "d-flex flex-column site-container active-cont"
         : "d-flex flex-column site=container"
       }>
-        <ToastContainer position="bottom-center" limit={1}></ToastContainer>
+        <ToastContainer position="bottom-center" limit={1}/>
         <Header />
         <main>
           <Container className="mt-3 expand">
@@ -52,6 +54,11 @@ function App() {
                 element={<AdminRoute>
                   <DashboardPage></DashboardPage>
                 </AdminRoute>}
+              />
+              <Route path="/create"
+                element={
+                  <CreateItem></CreateItem>
+                }
               />
               <Route path="/" element={<Home />} />
             </Routes>

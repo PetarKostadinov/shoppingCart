@@ -22,6 +22,8 @@ function Header() {
         localStorage.removeItem('userInfo');
         localStorage.removeItem('shippingInfo');
         localStorage.removeItem('paymentMethod');
+        localStorage.removeItem('productsOnList');
+        localStorage.clear()
         window.location.href = '/login';
     };
 
@@ -89,6 +91,9 @@ function Header() {
                                 )}
                                 {userInfo && userInfo.isAdmin && (
                                     <NavDropdown title="Admin" id="admin-nav-dropdown">
+                                        <LinkContainer to="/create">
+                                            <NavDropdown.Item>Add New Product</NavDropdown.Item>
+                                        </LinkContainer>
                                         <LinkContainer to="/admin/dashboard">
                                             <NavDropdown.Item>Dashboard</NavDropdown.Item>
                                         </LinkContainer>

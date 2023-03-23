@@ -249,7 +249,7 @@ function SearchPage() {
                             )}
                             <Row>
                                 {products.map((product) => (
-                                    <Col sm={6} lg={4} className="mb-3" key={product._id}>
+                                    <Col sm={6} lg={4} className="mb-3 popup pb-5 pt-5" key={product._id}>
                                         <Product product={product}></Product>
                                     </Col>
                                 ))}

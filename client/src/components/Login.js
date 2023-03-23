@@ -1,4 +1,3 @@
-
 import React, { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import { Button, Container, Form } from 'react-bootstrap';
@@ -6,9 +5,6 @@ import { Helmet } from 'react-helmet-async';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Store } from './Store';
 import { toast } from 'react-toastify';
-
-
-
 
 function Login() {
     const navigate = useNavigate();
@@ -23,6 +19,7 @@ function Login() {
 
     const submitHandler = async (e) => {
         e.preventDefault();
+        
         try {
             const { data } = await axios.post('/api/users/login', {
                 email,
@@ -33,14 +30,15 @@ function Login() {
             localStorage.setItem('userInfo', JSON.stringify(data));
             navigate(redirect || '/');
 
-        } catch (err) {
-            toast.error('Invalid email or password')
+        } catch (error) {
+            toast.error('Invalid username or password')
         }
     }
 
     useEffect(() => {
         if(userInfo) {
             navigate(redirect);
+
         }
     }, [navigate, redirect, userInfo]);
 

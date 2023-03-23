@@ -38,6 +38,7 @@ function Home() {
             try {
                 const result = await axios.get('/api/products');
                 dispatch({ type: 'FETCH_SUCCESS', payload: result.data })
+
             } catch (err) {
                 dispatch({ type: 'FETCH_FAIL', payload: err.message })
             }
@@ -68,7 +69,7 @@ function Home() {
                     ) : (
                         <Row className="row pt-4 gy-4">
                             {products.map(x => (
-                                <Col key={x.slug} sm={6} md={5} lg={4} className="md-4">
+                                <Col key={x._id} sm={6} md={5} lg={4} className="md-4">
                                     <Product product={x}></Product>
                                 </Col>
                             ))}

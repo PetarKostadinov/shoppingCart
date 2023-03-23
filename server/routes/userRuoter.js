@@ -5,6 +5,7 @@ import bcrypt from 'bcryptjs';
 import expressAsyncHandler from 'express-async-handler';
 import { auth, generateToken } from "../utils.js";
 
+
 const userRouter = express.Router();
 
 userRouter.post('/login', expressAsyncHandler(async (req, res) => {
@@ -16,11 +17,13 @@ userRouter.post('/login', expressAsyncHandler(async (req, res) => {
                 username: user.username,
                 email: user.email,
                 isAdmin: user.isAdmin,
+                itemsInCart: user.itemsInCart,
                 token: generateToken(user)
             });
             return;
         }
     }
+    
     res.status(401).send({ message: 'Invalid email or password' });
 }));
 

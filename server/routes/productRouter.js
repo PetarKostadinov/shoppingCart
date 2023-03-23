@@ -6,6 +6,7 @@ const productRouter = express.Router();
 
 productRouter.get('/', async (req, res) => {
     const products = await Product.find();
+
     res.send(products);
 });
 
@@ -79,7 +80,7 @@ productRouter.get('/slug/:slug', async (req, res) => {
     if (product) {
         res.send(product);
     } else {
-        res.status(404).send({ message: 'Product Not Found' })
+        res.status(404).send({ message: 'Product Not Found' });
     }
 });
 
@@ -88,8 +89,86 @@ productRouter.get('/:id', async (req, res) => {
     if (product) {
         res.send(product);
     } else {
-        res.status(404).send({ message: 'Product Not Found' })
+        res.status(404).send({ message: 'Product Not Found' });
     }
+});
+
+productRouter.post('/create', expressAsyncHandler(async (req, res) => {
+
+    const currProduct = await Product.find({});
+    if (currProduct) {
+        const nameExists = currProduct.find(x => x.name === req.body.name);
+
+        if (nameExists) {
+            throw new Error('Product with the same Name already in the list!');
+        }
+
+        const slugExists = currProduct.find(x => x.slug === req.body.slug);
+
+        if (slugExists) {
+            throw new Error('Product with the same Slug already in the list!');
+        }
+    }
+
+    if (req.body.name === ''
+        || req.body.slug === ''
+        || req.body.image === ''
+        || req.body.brand === ''
+        || req.body.category === ''
+        || req.body.descriptio === ''
+        || req.body.price === ''
+        || req.body.countMany === ''
+        || req.body.rating === ''
+        || req.body.numReviews === '') {
+        throw new Error('All fields are required!');
+    }
+
+    if (isNaN(req.body.price) === true || req.body.price < 1) {
+        throw new Error('Price should be a positive number')
+    } else if (isNaN(req.body.countMany) === true || req.body.countMany < 0) {
+        throw new Error('The Count should be a positive number or 0')
+    } else if (isNaN(req.body.rating) === true || req.body.rating < 0) {
+        throw new Error('Rating should be a positive number or 0')
+    } else if (isNaN(req.body.numReviews) === true || req.body.numReviews < 0) {
+        throw new Error('Number of Reviews should be a positive number or 0')
+    }
+
+    const newProduct = new Product({
+        name: req.body.name,
+        slug: req.body.slug,
+        image: req.body.image,
+        brand: req.body.brand,
+        category: req.body.category,
+        description: req.body.description,
+        price: req.body.price,
+        countMany: req.body.countMany,
+        rating: req.body.rating,
+        numReviews: req.body.numReviews
+
+    });
+
+    const product = await newProduct.save();
+    res.send({
+        _id: product._id,
+        name: product.name,
+        slug: product.slug,
+        image: product.image,
+        brand: product.brand,
+        category: product.category,
+        description: product.description,
+        price: product.price,
+        countMany: product.countMany,
+        rating: product.rating,
+        numReviews: product.numReviews
+
+    });
+}));
+
+productRouter.delete('/:id', async (req, res) => {
+    const id = req.params.id
+     await Product.findByIdAndDelete(id)
+
+    res.send({ message: 'Item Deleted' })
 });
 
 export default productRouter;

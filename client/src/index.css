@@ -11,17 +11,19 @@ body {
   background-attachment: fixed;
 }
 
-.nav-link-class:hover{
-  color:  white !important;
-  text-decoration: underline;
-}
-
-.hov:hover{
+.nav-link-class:hover {
   color: white !important;
   text-decoration: underline;
 }
-.hov, .nav-link-class{
-  color:  #1cc7e1;
+
+.hov:hover {
+  color: white !important;
+  text-decoration: underline;
+}
+
+.hov,
+.nav-link-class {
+  color: #1cc7e1;
 }
 
 
@@ -40,10 +42,11 @@ main {
 
 }
 
-.card{
+.card {
   background-color: rgba(53, 50, 50, 0.8);
 
 }
+
 .products {
   display: flex;
   flex-wrap: wrap;
@@ -66,7 +69,19 @@ main {
   max-height: 600px;
 }
 
+.popup {
+  transition: all 0.4s;
+  max-height: 600px;
+}
+
+
+
 .md-4:hover {
+  transform: scale(1.1);
+  cursor: pointer;
+}
+
+.popup:hover {
   transform: scale(1.1);
   cursor: pointer;
 }
@@ -74,7 +89,7 @@ main {
 .product img {
   width: 100%;
   max-width: 400px;
-  
+
 }
 
 .product-info {
@@ -83,16 +98,17 @@ main {
 
 .img-large {
   max-width: 60%;
- 
+
 }
 
 .img-thumbnail {
-  height: 60px;
+  height: 55px;
+  max-width: 55px;
 }
 
 .small-container {
   max-width: 600px;
-  
+
 }
 
 .checkout-steps>div {
@@ -139,3 +155,8 @@ a {
   text-decoration: none;
 
 }
+
+/* .button-delete{
+  margin-left: 105px;
+ 
+} */
