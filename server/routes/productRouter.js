@@ -1,6 +1,7 @@
 import express from 'express';
 import expressAsyncHandler from 'express-async-handler';
 import Product from '../models/productModel.js';
+import { auth } from '../utils.js';
 
 const productRouter = express.Router();
 
@@ -170,5 +171,40 @@ productRouter.delete('/:id', async (req, res) => {
 
     res.send({ message: 'Item Deleted' })
 });
+
+productRouter.put('/:id/editItem', auth, expressAsyncHandler(async (req, res) => {
+    const item = await Product.findById(req.params.id);
+    if (item) {
+        item.name = req.body.name || item.name;
+        item.slug = req.body.slug || item.slug;
+        item.image = req.body.image || item.image;
+        item.brand = req.body.brand || item.brand;
+        item.category = req.body.category || item.category;
+        item.description = req.body.description || item.description;
+        item.price = req.body.price || item.price;
+        item.countMany = req.body.countMany || item.countMany;
+        item.rating = req.body.rating || item.rating;
+        item.numReviews = req.body.numReviews || item.numReviews;
+        
+        const updatedItem = await item.save();
+        res.send({
+            _id: updatedItem._id,
+            name: updatedItem.name,
+            slug: updatedItem.slug,
+            image: updatedItem.image,
+            brand: updatedItem.brand,
+            category: updatedItem.category,
+            description: updatedItem.description,
+            price: updatedItem.price,
+            count: updatedItem.count,
+            rating: updatedItem.rating,
+            numReviews: updatedItem.numReviews,
+           // token:generateToken(updatedItem)
+        });
+
+    }else{
+        res.status(404).send({message: 'Item Not Found'})
+    }
+}));
 
 export default productRouter;

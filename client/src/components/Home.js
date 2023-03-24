@@ -42,8 +42,6 @@ function Home() {
             } catch (err) {
                 dispatch({ type: 'FETCH_FAIL', payload: err.message })
             }
-
-            //setProducts(result.data);
         };
 
         fetchData();
@@ -52,9 +50,9 @@ function Home() {
 
     return (
         <>
-            {/* <div>
+            <div>
                 <img className="mw-100" src="/images/Homepage-Hero-Desktop-Slot-9.jpg" alt="Home Page" />
-            </div> */}
+            </div>
             <div>
                 <Helmet>
                     <title>shopping well</title>

@@ -49,7 +49,7 @@ function CreateItem() {
             );
 
             ctxDispatch({ type: 'PRODUCT_CREATE', payload: data });
-            localStorage.setItem('productsOnList', JSON.stringify(data));
+            
             navigate(redirect);
 
         } catch (err) {

@@ -2,13 +2,13 @@ import axios from 'axios';
 import React, { useContext, useEffect, useReducer, useState } from 'react'
 import { Badge, Button, Card, Col, ListGroup, Row } from 'react-bootstrap';
 import { Helmet } from 'react-helmet-async';
-import { useNavigate, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
+
 import getError from '../util';
 import LoadingComponent from './LoadingComponent';
 import MessageComponent from './MessageComponent';
 import Rating from './Rating';
 import { Store } from './Store';
-
 
 const reducer = (state, action) => {
     switch (action.type) {
@@ -29,8 +29,8 @@ function ProductScreen() {
     const params = useParams();
     const { slug } = params;
 
-    const [{ loading, error, product, allProducts }, dispatch] = useReducer(reducer, {
-        allProducts: [],
+    const [{ loading, error, product }, dispatch] = useReducer(reducer, {
+
         product: [],
         loading: true,
         error: ''
@@ -68,77 +68,75 @@ function ProductScreen() {
         navigate('/cart');
     };
 
-/////DELETE   -   EDIT
+    /////  DELETE   -   EDIT
 
     const deleteHandler = async () => {
-        
-       await axios.delete(`/api/products/${product._id}`)
-       ctxDispatch({type: 'CART_REMOVE_ITEM', payload: product});
-       navigate('/');
-    }
 
-    const editHandler = async () => {
-
+        await axios.delete(`/api/products/${product._id}`)
+        ctxDispatch({ type: 'CART_REMOVE_ITEM', payload: product });
+        navigate('/');
     }
 
     return loading ? (<LoadingComponent />)
         : error ? (<MessageComponent variant="danger">{error}</MessageComponent>)
             : (<div>
-                <Row>
-                    <Col md={6}><img className="img-large" src={product.image} alt={product.name} /></Col>
-                    <Col md={3}>
-                        <ListGroup variant="flush">
-                            <ListGroup.Item>
-                                <Helmet>
-                                    <title>{product.name}</title>
-                                </Helmet>
-                                <h1>{product.name}</h1></ListGroup.Item>
-                            <ListGroup.Item><Rating rating={product.rating} numReviews={product.numReviews}></Rating></ListGroup.Item>
-                            <ListGroup.Item>Price: ${product.price}</ListGroup.Item>
-                            <ListGroup.Item>Description: <p>{product.description}</p></ListGroup.Item>
-                            {userInfo && userInfo.isAdmin && (
-                                <ListGroup.Item className="align-center">
-                                    <Button onClick={editHandler}>Edit</Button>{' '}
+                
+                    <Row>
+                        <Col md={6}><img className="img-large" src={product.image} alt={product.name} /></Col>
+                        <Col md={3}>
+                            <ListGroup variant="flush">
+                                <ListGroup.Item>
+                                    <Helmet>
+                                        <title>{product.name}</title>
+                                    </Helmet>
+                                    <h1>{product.name}</h1></ListGroup.Item>
+                                <ListGroup.Item><Rating rating={product.rating} numReviews={product.numReviews}></Rating></ListGroup.Item>
+                                <ListGroup.Item>Price: ${product.price}</ListGroup.Item>
+                                <ListGroup.Item>Description: <p>{product.description}</p></ListGroup.Item>
+                                {userInfo && userInfo.isAdmin && (
+                                    <ListGroup.Item className="align-center">
+                                        <Link to={`/${product._id}/editItem`}>Edit</Link>{' '}
 
-                                    <Button className="button-delete" onClick={deleteHandler}>Delete</Button>
-                                </ListGroup.Item>
-                            )}
-                        </ListGroup>
+                                        <Button className="button-delete" onClick={deleteHandler}>Delete</Button>
+                                    </ListGroup.Item>
+                                )}
+                            </ListGroup>
 
-                    </Col>
-                    <Col md={3}>
-                        <Card>
-                            <Card.Body>
-                                <ListGroup variant="flush">
-                                    <ListGroup.Item>
-                                        <Row>
-                                            <Col>Price:</Col>
-                                            <Col>${product.price}</Col>
-                                        </Row>
-                                    </ListGroup.Item>
-                                    <ListGroup.Item>
-                                        <Row>
-                                            <Col>Status:</Col>
-                                            <Col>
-                                                {product.countMany > 0 ?
-                                                    (<Badge bg="success">In Stock</Badge>)
-                                                    : (<Badge bg="danger">Unavailable</Badge>)}
-                                            </Col>
-                                        </Row>
-                                    </ListGroup.Item>
-                                    {product.countMany > 0
-                                        && (<ListGroup.Item>
-                                            <div className="d-grid">
-                                                <Button onClick={addToCartHandler} variant="primary">
-                                                    AddTo Cart
-                                                </Button>
-                                            </div>
-                                        </ListGroup.Item>)}
-                                </ListGroup>
-                            </Card.Body>
-                        </Card>
-                    </Col>
-                </Row>
+                        </Col>
+                        <Col md={3}>
+                            <Card>
+                                <Card.Body>
+                                    <ListGroup variant="flush">
+                                        <ListGroup.Item>
+                                            <Row>
+                                                <Col>Price:</Col>
+                                                <Col>${product.price}</Col>
+                                            </Row>
+                                        </ListGroup.Item>
+                                        <ListGroup.Item>
+                                            <Row>
+                                                <Col>Status:</Col>
+                                                <Col>
+                                                    {product.countMany > 0 ?
+                                                        (<Badge bg="success">In Stock</Badge>)
+                                                        : (<Badge bg="danger">Unavailable</Badge>)}
+                                                </Col>
+                                            </Row>
+                                        </ListGroup.Item>
+                                        {product.countMany > 0
+                                            && (<ListGroup.Item>
+                                                <div className="d-grid">
+                                                    <Button onClick={addToCartHandler} variant="primary">
+                                                        AddTo Cart
+                                                    </Button>
+                                                </div>
+                                            </ListGroup.Item>)}
+                                    </ListGroup>
+                                </Card.Body>
+                            </Card>
+                        </Col>
+                    </Row>
+               
             </div >);
 
 

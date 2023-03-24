@@ -21,6 +21,7 @@ import Header from "./components/Header";
 import { useState } from "react";
 
 import CreateItem from "./components/CreateItem";
+import EditItemPage from "./components/EditItemPage";
 
 function App() {
 
@@ -41,6 +42,7 @@ function App() {
               <Route path="/cart" element={<CartScreen />} />
               <Route path="/search" element={<SearchPage />} />
               <Route path="/login" element={<Login />} />
+             
               <Route path="/profile" element={<Protected><Profile /></Protected>} />
               <Route path="/register" element={<Register />} />
               <Route path="/shipping" element={<ShippingInfo />} />
@@ -60,6 +62,12 @@ function App() {
                   <CreateItem></CreateItem>
                 }
               />
+               <Route path="/:id/editItem"
+                element={
+                  <EditItemPage></EditItemPage>
+                }
+              />
+              
               <Route path="/" element={<Home />} />
             </Routes>
           </Container>
