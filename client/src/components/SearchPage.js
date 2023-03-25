@@ -70,6 +70,7 @@ function SearchPage() {
     const navigate = useNavigate();
     const { search } = useLocation();
     const sp = new URLSearchParams(search);
+    
     const category = sp.get('category') || 'all';
     const query = sp.get('query') || 'all';
     const price = sp.get('price') || 'all';
