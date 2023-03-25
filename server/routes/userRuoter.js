@@ -17,7 +17,7 @@ userRouter.post('/login', expressAsyncHandler(async (req, res) => {
                 username: user.username,
                 email: user.email,
                 isAdmin: user.isAdmin,
-                itemsInCart: user.itemsInCart,
+                itemsInCartDb: user.itemsInCart,
                 token: generateToken(user)
             });
             return;
@@ -39,6 +39,7 @@ userRouter.post('/register', expressAsyncHandler(async (req, res) => {
         username: user.username,
         email: user.email,
         isAdmin: user.isAdmin,
+        itemsInCartDb: user.isAdmin,
         token: generateToken(user)
     });
 

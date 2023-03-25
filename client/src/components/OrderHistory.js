@@ -69,7 +69,7 @@ function OrderHistory() {
                         </tr>
                     </thead>
                     <tbody>
-                        {orders.map((order) => (
+                        {orders._id ? orders.map((order) => (
                             <tr className="text-white" style={{ backgroundColor: 'rgba(53, 50, 50, 0.8)' }} key={order._id}>
                                 <td>{order._id}</td>
                                 <td>{order.createdAt.substring(0, 10)}</td>
@@ -86,7 +86,11 @@ function OrderHistory() {
                                     </Button>
                                 </td>
                             </tr>
-                        ))}
+                        )) : (
+                            <div>
+                            <h1>There are no orders yet</h1>
+                            </div>
+                        )}
                     </tbody>
                 </table>
             )}

@@ -14,7 +14,7 @@ import MessageComponent from './MessageComponent';
 const reducer = (state, action) => {
     switch (action.type) {
         case 'FETCH_REQUEST':
-            return { ...state, loading: true };
+            return { ...state, loading: true};
         case 'FETCH_SUCCESS':
             return { ...state, products: action.payload, loading: false };
         case 'FETCH_FAIL':

@@ -7,14 +7,14 @@ import { toast } from 'react-toastify';
 import getError from '../util';
 import { Store } from './Store';
 
-
-
 const reducer = (state, action) => {
     switch (action.type) {
         case 'UPDATE_ITEM_REQUEST':
             return { ...state, loadingUpdate: true };
         case 'UPDATE_ITEM_SUCCESS':
-            return { ...state, itemToEdit: action.payload, loadingUpdate: false };
+            return { ...state, itemToEditDb: action.payload, loadingUpdate: false };
+        case 'GET_ITEM_SUCCESS':
+            return { ...state, currItem: action.payload, loadingUpdate: false };
         case 'UPDATE_ITEM_FAIL':
             return { ...state, loadingUpdate: false };
         default:
@@ -26,26 +26,12 @@ function EditItemPage() {
     const navigate = useNavigate();
 
     const { id } = useParams();
-    // console.log(id)
-    let item = []
 
-    const findById = async () => {
-        const data = await axios.get(`/api/products/${id}`)
-            .then((res) => {
-                //console.log(res.data)
-                localStorage.setItem('itemToEdit', JSON.stringify(res.data))
-                item.push(JSON.stringify(res.data))
-                return JSON.stringify(res.data)
-            })
+    const currItem = JSON.parse(localStorage.getItem('itemToEditDb'))
 
-    }
-    const curItem = JSON.parse(localStorage.getItem('itemToEdit'))
-    findById()
-    // console.log(item)
+    const [{ loadingUpdate, itemToEditDb }, dispatch] = useReducer(reducer, {
 
-    const [{ loading, error, itemToEdit }, dispatch] = useReducer(reducer, {
-
-        itemToEdit: [],
+        itemToEditDb: [],
         loading: true,
         error: ''
     });
@@ -63,10 +49,12 @@ function EditItemPage() {
 
     const { state, dispatch: ctxDispatch } = useContext(Store);
     const { userInfo } = state;
+
     const submitHandler = async (e) => {
         e.preventDefault();
+        dispatch({ type: 'UPDATE_ITEM_REQUEST' });
         try {
-            const { data } = await axios.put(
+            const result = await axios.put(
                 `/api/products/${id}/editItem`,
                 {
                     name,
@@ -84,11 +72,9 @@ function EditItemPage() {
                     headers: { Authorization: `Bearer ${userInfo.token}` }
                 }
             );
+            ctxDispatch({ type: 'UPDATE_ITEM_SUCCESS', payload: result.data });
 
-            ctxDispatch({ type: 'UPDATE_ITEM_SUCCESS', payload: data });
-            //console.log(data)
-            localStorage.setItem('itemToEdit', JSON.stringify(data))
-            navigate(`/product/${curItem.slug}`)
+            navigate(`/product/${currItem.slug}`)
             toast.success('The Item has been updated successfully');
 
         } catch (err) {
@@ -96,8 +82,7 @@ function EditItemPage() {
             toast.error(getError(err));
         }
     }
-
-
+   
     return (
         <div className="container small-container">
             <Helmet>
@@ -108,8 +93,8 @@ function EditItemPage() {
                 <Form.Group className="mb-3" controlId="name">
                     <Form.Label>Name</Form.Label>
                     <Form.Control
-                  
-                        defaultValue={curItem.name}
+
+                        defaultValue={currItem.name}
                         onChange={(e) => setName(e.target.value)}
                         required
                     />
@@ -118,7 +103,7 @@ function EditItemPage() {
                     <Form.Label>Slug</Form.Label>
                     <Form.Control
                         type="slug"
-                        defaultValue={curItem.slug}
+                        defaultValue={currItem.slug}
                         onChange={(e) => setSlug(e.target.value)}
                         required
                     />
@@ -126,14 +111,14 @@ function EditItemPage() {
                 <Form.Group className="mb-3" controlId="image">
                     <Form.Label>Image</Form.Label>
                     <Form.Control
-                        defaultValue={curItem.image}
+                        defaultValue={currItem.image}
                         onChange={(e) => setImage(e.target.value)}
                     />
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="brand">
                     <Form.Label>Brand</Form.Label>
                     <Form.Control
-                        defaultValue={curItem.brand}
+                        defaultValue={currItem.brand}
                         type="brand"
                         onChange={(e) => setBrand(e.target.value)}
 
@@ -142,7 +127,7 @@ function EditItemPage() {
                 <Form.Group className="mb-3" controlId="category">
                     <Form.Label>Category</Form.Label>
                     <Form.Control
-                        defaultValue={curItem.category}
+                        defaultValue={currItem.category}
                         type="category"
                         onChange={(e) => setCategory(e.target.value)}
 
@@ -151,7 +136,7 @@ function EditItemPage() {
                 <Form.Group className="mb-3" controlId="description">
                     <Form.Label>Description</Form.Label>
                     <Form.Control
-                        defaultValue={curItem.description}
+                        defaultValue={currItem.description}
                         type="description"
                         onChange={(e) => setDescription(e.target.value)}
 
@@ -160,7 +145,7 @@ function EditItemPage() {
                 <Form.Group className="mb-3" controlId="price">
                     <Form.Label>Price</Form.Label>
                     <Form.Control
-                        defaultValue={curItem.price}
+                        defaultValue={currItem.price}
                         type="price"
                         onChange={(e) => setPrice(e.target.value)}
 
@@ -169,7 +154,7 @@ function EditItemPage() {
                 <Form.Group className="mb-3" controlId="countMany">
                     <Form.Label>Count</Form.Label>
                     <Form.Control
-                        defaultValue={curItem.countMany}
+                        defaultValue={currItem.countMany}
                         type="countMany"
                         onChange={(e) => setCountMany(e.target.value)}
 
@@ -178,7 +163,7 @@ function EditItemPage() {
                 <Form.Group className="mb-3" controlId="rating">
                     <Form.Label>Rating</Form.Label>
                     <Form.Control
-                        defaultValue={curItem.rating}
+                        defaultValue={currItem.rating}
                         type="rating"
                         onChange={(e) => setRating(e.target.value)}
 
@@ -187,7 +172,7 @@ function EditItemPage() {
                 <Form.Group className="mb-3" controlId="numReviews">
                     <Form.Label>Number of Reviews</Form.Label>
                     <Form.Control
-                        defaultValue={curItem.numReviews}
+                        defaultValue={currItem.numReviews}
                         type="numReviews"
                         onChange={(e) => setNumReviews(e.target.value)}
 

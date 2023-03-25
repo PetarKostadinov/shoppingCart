@@ -14,20 +14,25 @@ function Login() {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [itemsInCartDb, setItemsInCartDb] = useState('');
+    
     const { state, dispatch: ctxDispatch } = useContext(Store);
     const {userInfo} = state;
 
     const submitHandler = async (e) => {
         e.preventDefault();
         
+        
         try {
             const { data } = await axios.post('/api/users/login', {
                 email,
-                password
+                password,
+                itemsInCartDb
             });
 
             ctxDispatch({ type: 'USER_LOGIN', payload: data })
             localStorage.setItem('userInfo', JSON.stringify(data));
+            console.log(data.itemsInCartDb)
             navigate(redirect || '/');
 
         } catch (error) {
