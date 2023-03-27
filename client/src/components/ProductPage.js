@@ -27,7 +27,7 @@ function ProductScreen() {
     const navigate = useNavigate();
 
     const params = useParams();
-    const { slug } = params;
+    const { id } = params;
 
     const [{ loading, error, product }, dispatch] = useReducer(reducer, {
 
@@ -40,7 +40,7 @@ function ProductScreen() {
         const fetchData = async () => {
             dispatch({ type: 'FETCH_REQUEST' });
             try {
-                const result = await axios.get(`/api/products/slug/${slug}`);
+                const result = await axios.get(`/api/products/_id/${id}`);
                 dispatch({ type: 'FETCH_SUCCESS', payload: result.data })
                 localStorage.setItem('itemToEditDb', JSON.stringify(result.data))
             } catch (err) {
@@ -50,7 +50,7 @@ function ProductScreen() {
 
         fetchData();
 
-    }, [slug]);
+    }, [id]);
 
     const { state, dispatch: ctxDispatch } = useContext(Store);
     const { cart, userInfo } = state;

@@ -76,8 +76,8 @@ productRouter.get('/categories', expressAsyncHandler(async (req, res) => {
     res.send(categories);
 }))
 
-productRouter.get('/slug/:slug', async (req, res) => {
-    const product = await Product.findOne({ slug: req.params.slug });
+productRouter.get('/_id/:id', async (req, res) => {
+    const product = await Product.findOne({ _id: req.params.id });
     if (product) {
         res.send(product);
     } else {
@@ -174,18 +174,33 @@ productRouter.delete('/:id', async (req, res) => {
 
 productRouter.put('/:id/editItem', auth, expressAsyncHandler(async (req, res) => {
     const item = await Product.findById(req.params.id);
+    const currProduct = await Product.find({});
+    if (currProduct) {
+        const nameExists = currProduct.find(x => x.name === req.body.name);
+
+        if (nameExists) {
+            throw new Error('Product with the same Name already in the list!');
+        }
+
+        const slugExists = currProduct.find(x => x.slug === req.body.slug);
+
+        if (slugExists) {
+            throw new Error('Product with the same Slug already in the list!');
+        }
+    }
     if (item) {
+        item._id = req.body._id || item._id
         item.name = req.body.name || item.name;
         item.slug = req.body.slug || item.slug;
         item.image = req.body.image || item.image;
         item.brand = req.body.brand || item.brand;
         item.category = req.body.category || item.category;
         item.description = req.body.description || item.description;
-        item.price = req.body.price || item.price;
-        item.countMany = req.body.countMany || item.countMany;
+        item.price = Number(req.body.price )|| Number(item.price);
+        item.countMany = Number(req.body.countMany) || Number(item.countMany);
         item.rating = req.body.rating || item.rating;
         item.numReviews = req.body.numReviews || item.numReviews;
-        
+       
         const updatedItem = await item.save();
         res.send({
             _id: updatedItem._id,
@@ -195,13 +210,13 @@ productRouter.put('/:id/editItem', auth, expressAsyncHandler(async (req, res) =>
             brand: updatedItem.brand,
             category: updatedItem.category,
             description: updatedItem.description,
-            price: updatedItem.price,
-            count: updatedItem.count,
+            price: Number(updatedItem.price),
+            countMany: Number(updatedItem.countMany),
             rating: updatedItem.rating,
             numReviews: updatedItem.numReviews,
            // token:generateToken(updatedItem)
         });
-
+      
     }else{
         res.status(404).send({message: 'Item Not Found'})
     }

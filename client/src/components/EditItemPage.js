@@ -10,7 +10,7 @@ import { Store } from './Store';
 const reducer = (state, action) => {
     switch (action.type) {
         case 'UPDATE_ITEM_REQUEST':
-            return { ...state, loadingUpdate: true };
+            return { ...state, loadingUpdate: true, itemToEditDb: action.payload };
         case 'UPDATE_ITEM_SUCCESS':
             return { ...state, itemToEditDb: action.payload, loadingUpdate: false };
         case 'GET_ITEM_SUCCESS':
@@ -54,6 +54,8 @@ function EditItemPage() {
         e.preventDefault();
         dispatch({ type: 'UPDATE_ITEM_REQUEST' });
         try {
+          
+
             const result = await axios.put(
                 `/api/products/${id}/editItem`,
                 {
@@ -72,17 +74,27 @@ function EditItemPage() {
                     headers: { Authorization: `Bearer ${userInfo.token}` }
                 }
             );
+
+            if(isNaN(result.data.price) || Number(result.data.price) < 1) {
+                throw new Error('Price should be a Positive Number')
+            }else if(isNaN(result.data.countMany) || Number(result.data.countMany) < 0){
+                throw new Error('Count should be a Positive Number or 0')
+            }else if(isNaN(result.data.rating) || Number(result.data.rating) < 0){
+                throw new Error('Rating should be a Positive Number or 0')
+            }else if(isNaN(result.data.numReviews) || Number(result.data.numReviews) < 0){
+                throw new Error('Number of Reviews should be a Positive Number or 0')
+            }
             ctxDispatch({ type: 'UPDATE_ITEM_SUCCESS', payload: result.data });
-
-            navigate(`/product/${currItem.slug}`)
+            navigate(`/product/${result.data._id}`)
             toast.success('The Item has been updated successfully');
-
+           
+           
         } catch (err) {
             dispatch({ type: 'FETCH_FAIL' });
             toast.error(getError(err));
         }
     }
-   
+    
     return (
         <div className="container small-container">
             <Helmet>
@@ -102,7 +114,7 @@ function EditItemPage() {
                 <Form.Group className="mb-3" controlId="slug">
                     <Form.Label>Slug</Form.Label>
                     <Form.Control
-                        type="slug"
+                       
                         defaultValue={currItem.slug}
                         onChange={(e) => setSlug(e.target.value)}
                         required
@@ -113,14 +125,16 @@ function EditItemPage() {
                     <Form.Control
                         defaultValue={currItem.image}
                         onChange={(e) => setImage(e.target.value)}
+                        required
                     />
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="brand">
                     <Form.Label>Brand</Form.Label>
                     <Form.Control
                         defaultValue={currItem.brand}
-                        type="brand"
+                        
                         onChange={(e) => setBrand(e.target.value)}
+                        required
 
                     />
                 </Form.Group>
@@ -128,8 +142,9 @@ function EditItemPage() {
                     <Form.Label>Category</Form.Label>
                     <Form.Control
                         defaultValue={currItem.category}
-                        type="category"
+                     
                         onChange={(e) => setCategory(e.target.value)}
+                        required
 
                     />
                 </Form.Group>
@@ -137,8 +152,9 @@ function EditItemPage() {
                     <Form.Label>Description</Form.Label>
                     <Form.Control
                         defaultValue={currItem.description}
-                        type="description"
+                       
                         onChange={(e) => setDescription(e.target.value)}
+                        required
 
                     />
                 </Form.Group>
@@ -146,8 +162,9 @@ function EditItemPage() {
                     <Form.Label>Price</Form.Label>
                     <Form.Control
                         defaultValue={currItem.price}
-                        type="price"
+                        
                         onChange={(e) => setPrice(e.target.value)}
+                        required
 
                     />
                 </Form.Group>
@@ -155,8 +172,9 @@ function EditItemPage() {
                     <Form.Label>Count</Form.Label>
                     <Form.Control
                         defaultValue={currItem.countMany}
-                        type="countMany"
+                      
                         onChange={(e) => setCountMany(e.target.value)}
+                        required
 
                     />
                 </Form.Group>
@@ -164,8 +182,9 @@ function EditItemPage() {
                     <Form.Label>Rating</Form.Label>
                     <Form.Control
                         defaultValue={currItem.rating}
-                        type="rating"
+                      
                         onChange={(e) => setRating(e.target.value)}
+                        required
 
                     />
                 </Form.Group>
@@ -173,8 +192,9 @@ function EditItemPage() {
                     <Form.Label>Number of Reviews</Form.Label>
                     <Form.Control
                         defaultValue={currItem.numReviews}
-                        type="numReviews"
+                       
                         onChange={(e) => setNumReviews(e.target.value)}
+                        required
 
                     />
                 </Form.Group>

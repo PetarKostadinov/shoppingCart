@@ -10,11 +10,14 @@ import Product from './Product';
 import { Helmet } from 'react-helmet-async';
 import LoadingComponent from './LoadingComponent';
 import MessageComponent from './MessageComponent';
+import { Button } from 'react-bootstrap';
+import { LinkContainer } from 'react-router-bootstrap';
+import { useLocation } from 'react-router-dom';
 
 const reducer = (state, action) => {
     switch (action.type) {
         case 'FETCH_REQUEST':
-            return { ...state, loading: true};
+            return { ...state, loading: true };
         case 'FETCH_SUCCESS':
             return { ...state, products: action.payload, loading: false };
         case 'FETCH_FAIL':
@@ -25,12 +28,16 @@ const reducer = (state, action) => {
 }
 
 function Home() {
+
+  
     //const [products, setProducts] = useState([]);
     const [{ loading, error, products }, dispatch] = useReducer(reducer, {
         products: [],
         loading: true,
         error: ''
     });
+
+   
 
     useEffect(() => {
         const fetchData = async () => {
@@ -47,6 +54,9 @@ function Home() {
         fetchData();
 
     }, []);
+
+
+   
 
     return (
         <>
@@ -75,6 +85,22 @@ function Home() {
                     )}
                 </div>
             </div>
+            {/* <div>
+                {[...Array(pages).keys()].map((x) => (
+                    <LinkContainer
+                        key={x + 1}
+                        className="mx-1"
+                        to={getFilterUrl({ page: x + 1 })}
+                    >
+                        <Button
+                            className={Number(page) === x + 1 ? 'text-bold' : ''}
+                            variant="light"
+                        >
+                            {x + 1}
+                        </Button>
+                    </LinkContainer>
+                ))}
+            </div> */}
         </>
     )
 }
