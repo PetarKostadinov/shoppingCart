@@ -29,15 +29,12 @@ const reducer = (state, action) => {
 
 function Home() {
 
-  
     //const [products, setProducts] = useState([]);
     const [{ loading, error, products }, dispatch] = useReducer(reducer, {
         products: [],
         loading: true,
         error: ''
     });
-
-   
 
     useEffect(() => {
         const fetchData = async () => {
@@ -54,9 +51,6 @@ function Home() {
         fetchData();
 
     }, []);
-
-
-   
 
     return (
         <>

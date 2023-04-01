@@ -4,7 +4,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Container from "react-bootstrap/Container";
 import CartScreen from "./components/CartScreen";
-import ProductPage from "./components/ProductPage";
+import DetailsPage from "./components/DetailsPage";
 import Login from "./components/Login";
 import ShippingInfo from "./components/ShippingInfo";
 import Register from "./components/Register";
@@ -50,7 +50,7 @@ function App() {
               <Route path="/order" element={<Order />} />
               <Route path="/order/:id" element={<Protected><OrderSummary /></Protected>} />
               <Route path="/orderhistory" element={<Protected><OrderHistory /></Protected>} />
-              <Route path="/product/:id" element={<ProductPage />} />
+              <Route path="/product/:id" element={<DetailsPage />} />
               {/* Admin Routes */}
               <Route path="/admin/dashboard"
                 element={<AdminRoute>

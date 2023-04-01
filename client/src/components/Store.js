@@ -55,6 +55,13 @@ function reducer(state, action) {
         case 'PRODUCT_CREATE':
             const newProduct = action.payload;
             return { ...state, allListedItems: { ...state.allListedItems, newProduct } };
+        case 'UPDATE_ITEM_REQUEST':
+            return { ...state, loadingUpdate: true, itemToEditDb: action.payload };
+        case 'UPDATE_ITEM_SUCCESS':
+            return { ...state, itemToEditDb: action.payload, loadingUpdate: false };
+
+        case 'UPDATE_ITEM_FAIL':
+            return { ...state, loadingUpdate: false };
         default:
             return state;
     }

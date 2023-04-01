@@ -1,8 +1,9 @@
 import axios from 'axios';
-import React, { useContext, useEffect, useReducer, useState } from 'react'
+import React, { useContext, useEffect, useReducer } from 'react'
 import { Badge, Button, Card, Col, ListGroup, Row } from 'react-bootstrap';
 import { Helmet } from 'react-helmet-async';
 import { Link, useNavigate, useParams } from 'react-router-dom'
+import { toast } from 'react-toastify';
 
 import getError from '../util';
 import LoadingComponent from './LoadingComponent';
@@ -69,13 +70,19 @@ function ProductScreen() {
         navigate('/cart');
     };
 
-    /////  DELETE   -   EDIT
+    /////  DELETE
 
     const deleteHandler = async () => {
 
-        await axios.delete(`/api/products/${product._id}`)
-        ctxDispatch({ type: 'CART_REMOVE_ITEM', payload: product });
-        navigate('/');
+        try {
+            await axios.delete(`/api/products/${product._id}`)
+            ctxDispatch({ type: 'CART_REMOVE_ITEM', payload: product });
+            toast.success('The Item has been deleted successfully')
+            navigate('/');
+        } catch (error) {
+            toast.error('Item Not Found!')
+        }
+       
     }
 
     return loading ? (<LoadingComponent />)
@@ -96,7 +103,7 @@ function ProductScreen() {
                                 <ListGroup.Item>Description: <p>{product.description}</p></ListGroup.Item>
                                 {userInfo && userInfo.isAdmin && (
                                     <ListGroup.Item className="align-center">
-                                        <Link to={`/${product._id}/editItem`}>Edit</Link>{' '}
+                                        <Link to={`/${product._id}/editItem`} state={{currItem: product}}>Edit</Link>{' '}
 
                                         <Button className="button-delete" onClick={deleteHandler}>Delete</Button>
                                     </ListGroup.Item>

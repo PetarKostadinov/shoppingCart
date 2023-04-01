@@ -94,7 +94,11 @@
 
 26. Create SearchPage    
 
-26. Publish render.com  
+27. Create Edit Itme Page 
+
+28. Create Deleta Item Page
+
+29. Publish render.com  
   
 
 
