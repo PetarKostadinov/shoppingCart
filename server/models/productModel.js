@@ -8,7 +8,7 @@ const productSchema = new Schema(
         image: {
             type: String, validate: {
                 validator: (value) => URL_PATERN.test(value),
-                message: 'Invalid URL'
+                message: 'Invalid Image URL'
             }
         },
         brand: { type: String, required: true },
