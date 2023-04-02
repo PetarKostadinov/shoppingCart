@@ -36,6 +36,9 @@ function ProductScreen() {
         loading: true,
         error: ''
     });
+////
+    const { state, dispatch: ctxDispatch } = useContext(Store);
+    const { cart, userInfo } = state;
 
     useEffect(() => {
         const fetchData = async () => {
@@ -43,7 +46,7 @@ function ProductScreen() {
             try {
                 const result = await axios.get(`/api/products/_id/${id}`);
                 dispatch({ type: 'FETCH_SUCCESS', payload: result.data })
-                localStorage.setItem('itemToEditDb', JSON.stringify(result.data))
+                ctxDispatch({ type: 'FETCH_SUCCESS_DETAILS', payload: result.data })
             } catch (err) {
                 dispatch({ type: 'FETCH_FAIL', payload: getError(err) })
             }
@@ -52,9 +55,6 @@ function ProductScreen() {
         fetchData();
 
     }, [id]);
-
-    const { state, dispatch: ctxDispatch } = useContext(Store);
-    const { cart, userInfo } = state;
 
     const addToCartHandler = async () => {
         const exists = cart.cartItems.find((x) => x._id === product._id);
@@ -82,13 +82,11 @@ function ProductScreen() {
         } catch (error) {
             toast.error('Item Not Found!')
         }
-       
     }
 
     return loading ? (<LoadingComponent />)
         : error ? (<MessageComponent variant="danger">{error}</MessageComponent>)
             : (<div>
-                
                     <Row>
                         <Col md={6}><img className="img-large" src={product.image} alt={product.name} /></Col>
                         <Col md={3}>
@@ -103,7 +101,7 @@ function ProductScreen() {
                                 <ListGroup.Item>Description: <p>{product.description}</p></ListGroup.Item>
                                 {userInfo && userInfo.isAdmin && (
                                     <ListGroup.Item className="align-center">
-                                        <Link to={`/${product._id}/editItem`} state={{currItem: product}}>Edit</Link>{' '}
+                                        <Link to={`/${product._id}/editItem/${product.slug}`}>Edit</Link>{' '} 
 
                                         <Button className="button-delete" onClick={deleteHandler}>Delete</Button>
                                     </ListGroup.Item>

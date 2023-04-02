@@ -50,7 +50,7 @@ function App() {
               <Route path="/order" element={<Order />} />
               <Route path="/order/:id" element={<Protected><OrderSummary /></Protected>} />
               <Route path="/orderhistory" element={<Protected><OrderHistory /></Protected>} />
-              <Route path="/product/:id" element={<DetailsPage />} />
+              <Route path="/product/:id/:slug" element={<DetailsPage />} />
               {/* Admin Routes */}
               <Route path="/admin/dashboard"
                 element={<AdminRoute>
@@ -62,7 +62,7 @@ function App() {
                   <CreateItem></CreateItem>
                 }
               />
-               <Route path="/:id/editItem"
+               <Route path="/:id/editItem/:slug"
                 element={
                   <EditItemPage></EditItemPage>
                 }

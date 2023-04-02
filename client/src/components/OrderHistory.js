@@ -69,7 +69,7 @@ function OrderHistory() {
                         </tr>
                     </thead>
                     <tbody>
-                        {orders._id ? orders.map((order) => (
+                        {orders.length > 0 ? orders.map((order) => (
                             <tr className="text-white" style={{ backgroundColor: 'rgba(53, 50, 50, 0.8)' }} key={order._id}>
                                 <td>{order._id}</td>
                                 <td>{order.createdAt.substring(0, 10)}</td>

@@ -1,9 +1,18 @@
 import mongoose, { Schema, Types } from "mongoose";
 
+const EMAIL_PATTERN = /^([a-zA-Z]+)@([a-zA-Z]+)\.([a-zA-Z]+)$/;
+
 const userSchema = new Schema(
     {
         username: { type: String, required: true },
-        email: { type: String, required: true, unique: true },
+        email: {
+            type: String, required: true, validate: {
+                validator(value) {
+                    return EMAIL_PATTERN.test(value);
+                },
+                message: 'Invalid Email'
+            }
+        },
         password: { type: String, required: true },
         isAdmin: { type: Boolean, default: false, required: true },
         itemsInCart: { type: [Types.ObjectId], ref: 'Product', default: [] },

@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { useContext, useState } from 'react'
 import { Button, Form } from 'react-bootstrap';
 import { Helmet } from 'react-helmet-async';
-import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import getError from '../util';
 import { Store } from './Store';
@@ -19,20 +19,31 @@ function EditItemPage() {
     const [rating, setRating] = useState('');
     const [numReviews, setNumReviews] = useState('');
 
-    const location = useLocation();
     const navigate = useNavigate();
     const { id } = useParams();
-    const {currItem} = location.state
 
     const { state, dispatch } = useContext(Store);
-    const { userInfo } = state;
+    const { userInfo, currItem } = state;
+
 
     const submitHandler = async (e) => {
         e.preventDefault();
         dispatch({ type: 'UPDATE_ITEM_REQUEST' });
+
         try {
+
+            if (isNaN(e.target.price.value) === true || e.target.price.value < 1) {
+                throw new Error('Price should be a Positive Number')
+            } else if (isNaN(e.target.countMany.value) === true || e.target.countMany.value < 0) {
+                throw new Error('Count should be a Positive Number or 0')
+            } else if (isNaN(e.target.rating.value) === true || e.target.rating.value < 0) {
+                throw new Error('Rating should be a Positive Number or 0')
+            } else if (isNaN(numReviews) === true || numReviews < 0) {
+                throw new Error('Number of Reviews should be a Positive Number or 0')
+            }
+
             const result = await axios.put(
-                `/api/products/${id}/editItem`,
+                `/api/products/${id}/editItem/${e.target.slug.value}`,
                 {
                     name,
                     slug,
@@ -50,24 +61,20 @@ function EditItemPage() {
                 }
             );
 
-            if(isNaN(result.data.price) || Number(result.data.price) < 1) {
-                throw new Error('Price should be a Positive Number')
-            }else if(isNaN(result.data.countMany) || Number(result.data.countMany) < 0){
-                throw new Error('Count should be a Positive Number or 0')
-            }else if(isNaN(result.data.rating) || Number(result.data.rating) < 0){
-                throw new Error('Rating should be a Positive Number or 0')
-            }else if(isNaN(result.data.numReviews) || Number(result.data.numReviews) < 0){
-                throw new Error('Number of Reviews should be a Positive Number or 0')
-            }
             dispatch({ type: 'UPDATE_ITEM_SUCCESS', payload: result.data });
-            navigate(`/product/${result.data._id}`)
+            //dispatch({ type: 'FETCH_SUCCESS_DETAILS', payload: result.data });
+
+            navigate(`/product/${result.data._id}/${result.data.slug}`)
             toast.success('The Item has been updated successfully');
         } catch (err) {
             dispatch({ type: 'UPDATE_ITEM_FAIL' });
+
             toast.error(getError(err));
+
+
         }
     }
-    
+
     return (
         <div className="container small-container">
             <Helmet>
@@ -142,7 +149,7 @@ function EditItemPage() {
                 <Form.Group className="mb-3" controlId="rating">
                     <Form.Label>Rating</Form.Label>
                     <Form.Control
-                        defaultValue={currItem.rating}   
+                        defaultValue={currItem.rating}
                         onChange={(e) => setRating(e.target.value)}
                         required
                     />
@@ -159,8 +166,11 @@ function EditItemPage() {
                     <Button type="submit">
                         Edit
                     </Button>{' '}
+                </div>
+                <div>
+                    Changed your mind?{' '}
                     <Link type="button"
-                    to={`/product/${currItem._id}`}>
+                        to={`/product/${currItem._id}`}>
                         Cansel
                     </Link>
                 </div>

@@ -33,11 +33,11 @@ function Product(props) {
 
     return (
         <Card className="card h-100">
-            <Link to={`/product/${product._id}`}>
+            <Link to={`/product/${product._id}/${product.slug}`}>
                 <img src={product.image} className="card-img-top" alt={product.name}></img>
             </Link>
             <Card.Body>
-                <Link className="link-none-underline hov" to={`/product/${product._id}`}>
+                <Link className="link-none-underline hov" to={`/product/${product._id}/${product.slug}`}>
                     <Card.Title>
                         {product.name}
                     </Card.Title>
