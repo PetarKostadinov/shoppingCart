@@ -124,16 +124,6 @@ productRouter.post('/create', expressAsyncHandler(async (req, res) => {
         throw new Error('All fields are required!');
     }
 
-    if (isNaN(req.body.price) === true || req.body.price < 1) {
-        throw new Error('Price should be a positive number')
-    } else if (isNaN(req.body.countMany) === true || req.body.countMany < 0) {
-        throw new Error('The Count should be a positive number or 0')
-    } else if (isNaN(req.body.rating) === true || req.body.rating < 0) {
-        throw new Error('Rating should be a positive number or 0')
-    } else if (isNaN(req.body.numReviews) === true || req.body.numReviews < 0) {
-        throw new Error('Number of Reviews should be a positive number or 0')
-    }
-
     const newProduct = new Product({
         name: req.body.name,
         slug: req.body.slug,
@@ -161,7 +151,6 @@ productRouter.post('/create', expressAsyncHandler(async (req, res) => {
         countMany: product.countMany,
         rating: product.rating,
         numReviews: product.numReviews
-
     });
 }));
 
@@ -172,7 +161,7 @@ productRouter.delete('/:id', async (req, res) => {
     res.send({ message: 'Item Deleted' })
 });
 
-productRouter.put('/:id/editItem', auth, expressAsyncHandler(async (req, res) => {
+productRouter.put('/:id/editItem/:slug', auth, expressAsyncHandler(async (req, res) => {
     const item = await Product.findById(req.params.id);
     const currProduct = await Product.find({});
     if (currProduct) {
@@ -188,6 +177,7 @@ productRouter.put('/:id/editItem', auth, expressAsyncHandler(async (req, res) =>
             throw new Error('Product with the same Slug already in the list!');
         }
     }
+
     if (item) {
         item._id = req.body._id || item._id
         item.name = req.body.name || item.name;
@@ -196,12 +186,13 @@ productRouter.put('/:id/editItem', auth, expressAsyncHandler(async (req, res) =>
         item.brand = req.body.brand || item.brand;
         item.category = req.body.category || item.category;
         item.description = req.body.description || item.description;
-        item.price = Number(req.body.price )|| Number(item.price);
-        item.countMany = Number(req.body.countMany) || Number(item.countMany);
+        item.price = req.body.price ||item.price;
+        item.countMany = req.body.countMany || item.countMany;
         item.rating = req.body.rating || item.rating;
         item.numReviews = req.body.numReviews || item.numReviews;
        
         const updatedItem = await item.save();
+
         res.send({
             _id: updatedItem._id,
             name: updatedItem.name,
@@ -210,8 +201,8 @@ productRouter.put('/:id/editItem', auth, expressAsyncHandler(async (req, res) =>
             brand: updatedItem.brand,
             category: updatedItem.category,
             description: updatedItem.description,
-            price: Number(updatedItem.price),
-            countMany: Number(updatedItem.countMany),
+            price: updatedItem.price,
+            countMany: updatedItem.countMany,
             rating: updatedItem.rating,
             numReviews: updatedItem.numReviews,
            // token:generateToken(updatedItem)
