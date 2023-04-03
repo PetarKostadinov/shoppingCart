@@ -62,7 +62,6 @@ function EditItemPage() {
             );
 
             dispatch({ type: 'UPDATE_ITEM_SUCCESS', payload: result.data });
-            //dispatch({ type: 'FETCH_SUCCESS_DETAILS', payload: result.data });
 
             navigate(`/product/${result.data._id}/${result.data.slug}`)
             toast.success('The Item has been updated successfully');

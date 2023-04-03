@@ -14,12 +14,13 @@ function Product(props) {
     const {
         cart: { cartItems },
     } = state;
-
+    const { userInfo } = state;
 
     const addToCartHandler = async (item) => {
 
         const exists = cartItems.find((x) => x._id === product._id);
         const quantity = exists ? exists.quantity + 1 : 1;
+
         const { data } = await axios.get(`/api/products/${item._id}`);
 
 
@@ -29,7 +30,6 @@ function Product(props) {
 
         ctxDispatch({ type: 'CART_ADD_ITEM', payload: { ...item, quantity } });
     }
-
 
     return (
         <Card className="card h-100">

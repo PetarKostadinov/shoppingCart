@@ -17,7 +17,6 @@ userRouter.post('/login', expressAsyncHandler(async (req, res) => {
                 username: user.username,
                 email: user.email,
                 isAdmin: user.isAdmin,
-                itemsInCartDb: user.itemsInCart,
                 token: generateToken(user)
             });
             return;
@@ -67,5 +66,7 @@ userRouter.put('/profile', auth, expressAsyncHandler(async (req, res) => {
         res.status(404).send({message: 'User Not Found'})
     }
 }));
+
+
 
 export default userRouter;

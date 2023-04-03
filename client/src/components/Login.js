@@ -1,10 +1,11 @@
+
 import React, { useContext, useEffect, useState } from 'react';
-import axios from 'axios';
 import { Button, Container, Form } from 'react-bootstrap';
 import { Helmet } from 'react-helmet-async';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Store } from './Store';
 import { toast } from 'react-toastify';
+import { loginUser } from '../service/userService';
 
 function Login() {
     const navigate = useNavigate();
@@ -14,39 +15,28 @@ function Login() {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [itemsInCartDb, setItemsInCartDb] = useState('');
-    
+
     const { state, dispatch: ctxDispatch } = useContext(Store);
-    const {userInfo} = state;
+    const { userInfo } = state;
 
     const submitHandler = async (e) => {
         e.preventDefault();
-        
-        
         try {
-            const { data } = await axios.post('/api/users/login', {
-                email,
-                password,
-                itemsInCartDb
-            });
-
-            ctxDispatch({ type: 'USER_LOGIN', payload: data })
+            const data = await loginUser(email, password);
+            ctxDispatch({ type: 'USER_LOGIN', payload: data });
             localStorage.setItem('userInfo', JSON.stringify(data));
-            console.log(data.itemsInCartDb)
+            
             navigate(redirect || '/');
-
         } catch (error) {
-            toast.error('Invalid username or password')
+            toast.error(error.message);
         }
-    }
+    };
 
     useEffect(() => {
-        if(userInfo) {
+        if (userInfo) {
             navigate(redirect);
-
         }
     }, [navigate, redirect, userInfo]);
-
 
     return (
         <Container className="small-container">
@@ -83,4 +73,4 @@ function Login() {
     )
 }
 
-export default Login
+export default Login;

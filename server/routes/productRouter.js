@@ -11,6 +11,28 @@ productRouter.get('/', async (req, res) => {
     res.send(products);
 });
 
+// productRouter.get('/', (req, res) => {
+//     res.send('Hello World!');
+//   });
+
+productRouter.get('/products', (req, res) => {
+    const perPage = 3;
+    const page = parseInt(req.query.page) || 1;
+    const start = (page - 1) * perPage;
+    const end = start + perPage;
+    const paginatedPosts = posts.slice(start, end);
+    const totalPages = Math.ceil(posts.length / perPage);
+  
+    res.json({
+      posts: paginatedPosts,
+      page,
+      totalPages,
+    });
+  });
+  
+ 
+  
+
 const PAGE_SIZE = 3;
 productRouter.get('/search', expressAsyncHandler(async (req, res) => {
     const { query } = req;
