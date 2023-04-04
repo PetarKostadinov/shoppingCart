@@ -33,6 +33,7 @@ body {
 
 main {
   flex: 1;
+  min-height: 120vh;
 }
 
 .btn-primary,

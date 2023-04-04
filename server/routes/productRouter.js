@@ -16,7 +16,7 @@ productRouter.get('/', async (req, res) => {
 //   });
 
 productRouter.get('/products', (req, res) => {
-    const perPage = 3;
+    const perPage = 5;
     const page = parseInt(req.query.page) || 1;
     const start = (page - 1) * perPage;
     const end = start + perPage;

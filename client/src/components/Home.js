@@ -1,4 +1,3 @@
-
 import React, { useEffect, useReducer, useState } from 'react';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -6,21 +5,26 @@ import Product from './Product';
 import { Helmet } from 'react-helmet-async';
 import LoadingComponent from './LoadingComponent';
 import MessageComponent from './MessageComponent';
-import Button from 'react-bootstrap/Button';
 import { fetchProducts } from '../service/productService';
+import { useLocation } from 'react-router-dom';
+import { generatePaginationLinks } from '../service/paginationService';
 
 const reducer = (state, action) => {
     switch (action.type) {
         case 'FETCH_REQUEST':
             return { ...state, loading: true };
         case 'FETCH_SUCCESS':
-            return { ...state, products: action.payload, totalPages: Math.ceil(action.payload.length / state.productsPerPage), loading: false };
+            return { ...state, products: action.payload, totalPages: Math.ceil(action.payload.length / 6), loading: false };
         case 'FETCH_FAIL':
             return { ...state, loading: false, error: action.payload };
         default:
             return state;
     }
 };
+
+function useQuery() {
+    return new URLSearchParams(useLocation().search);
+}
 
 function Home() {
     const [currentPage, setCurrentPage] = useState(1);
@@ -29,8 +33,11 @@ function Home() {
         totalPages: 1,
         loading: true,
         error: '',
-        productsPerPage: 3,
+        productsPerPage: 6,
     });
+
+    const query = useQuery();
+    const page = parseInt(query.get("page")) || 1;
 
     useEffect(() => {
         const fetchData = async () => {
@@ -43,24 +50,16 @@ function Home() {
             }
         };
 
+        setCurrentPage(page);
+
         fetchData();
-    }, [currentPage, productsPerPage]);
-
-    const handlePrevPage = () => {
-        if (currentPage > 1) {
-            setCurrentPage(currentPage - 1);
-        }
-    };
-
-    const handleNextPage = () => {
-        if (currentPage < totalPages) {
-            setCurrentPage(currentPage + 1);
-        }
-    };
+    }, [currentPage, productsPerPage, page]);
 
     const indexOfLastProduct = currentPage * productsPerPage;
     const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
     const currentProducts = products.slice(indexOfFirstProduct, indexOfLastProduct);
+    
+    const paginationLinks = generatePaginationLinks(currentPage, totalPages)
 
     return (
         <>
@@ -87,19 +86,11 @@ function Home() {
                                     </Col>
                                 ))}
                             </Row>
-                            <div className="d-flex justify-content-center my-4">
-                                <Button variant="light" onClick={handlePrevPage} disabled={currentPage === 1}>
-                                    Previous
-                                </Button>
-                                <Button className="mx-1" variant="light" disabled>
-                                    Page {currentPage} of {totalPages}
-                                </Button>
-                                <Button variant="light" onClick={handleNextPage} disabled={currentPage === totalPages}>
-                                    Next
-                                </Button>
-                            </div>
                         </>
                     )}
+                </div>
+                <div className="d-flex justify-content-center">
+                    <div className="btn-group">{paginationLinks}</div>
                 </div>
             </div>
         </>
