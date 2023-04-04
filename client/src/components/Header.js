@@ -7,15 +7,14 @@ import SearchInput from "./SearchInput";
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import getError from '../util';
+import { getCategories } from '../service/productService';
 
 function Header() {
-
 
     const [sideBarIsOpen, setSideBarIsOpen] = useState(false);
     const [categories, setCategories] = useState([]);
     const { state, dispatch: ctxDispatch } = useContext(Store);
     const { cart, userInfo } = state;
-
 
     const logoutHandler = () => {
         ctxDispatch({ type: 'USER_LOGOUT' });
@@ -30,9 +29,11 @@ function Header() {
     useEffect(() => {
         const fetchCategories = async () => {
           try {
-            const { data } = await axios.get(`/api/products/categories`);
+            const data = await getCategories();
             setCategories(data);
+
           } catch (err) {
+
             toast.error(getError(err));
           }
         };
@@ -52,7 +53,7 @@ function Header() {
                         </Button>
                         <LinkContainer to="/">
                             <Navbar.Brand>
-                                <img src="/images/linkedin_banner_image_2.png" alt="shopping well" />
+                                <img src="/images/linkedin_banner_image_2.png" alt="shopping well"  className="w-100" />
                             </Navbar.Brand>
                         </LinkContainer>
                         <Navbar.Toggle aria-controls="basic-navbar-nav" />

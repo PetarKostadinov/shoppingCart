@@ -35,4 +35,53 @@ export const createProduct = async (userInfo, item) => {
   }
 }
 
+
+export const deleteProduct = async (id) => {
+  const response = await fetch(`/api/products/${id}`, {
+      method: 'DELETE',
+  });
+  if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+  }
+  const data = await response.json();
+  return data;
+}
+
+export const fetchProduct = async (id) => {
+  const response = await fetch(`/api/products/_id/${id}`);
+  if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+  }
+  const data = await response.json();
+  return data;
+}
+
+export const updateItem = async (id, slug, data, token) => {
+  const response = await fetch(`/api/products/${id}/editItem/${slug}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(data),
+  });
+
+  if (!response.ok) {
+    const message = `An error has occurred: ${response.status}`;
+    throw new Error(message);
+  }
+
+  return response.json();
+};
+
+export async function getCategories() {
+  const response = await fetch(`/api/products/categories`);
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+  return await response.json();
+}
+
+
+
   

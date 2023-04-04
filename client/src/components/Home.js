@@ -8,6 +8,7 @@ import MessageComponent from './MessageComponent';
 import { fetchProducts } from '../service/productService';
 import { useLocation } from 'react-router-dom';
 import { generatePaginationLinks } from '../service/paginationService';
+import { Carousel, Container, Image } from 'react-bootstrap';
 
 const reducer = (state, action) => {
     switch (action.type) {
@@ -58,14 +59,28 @@ function Home() {
     const indexOfLastProduct = currentPage * productsPerPage;
     const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
     const currentProducts = products.slice(indexOfFirstProduct, indexOfLastProduct);
-    
+
     const paginationLinks = generatePaginationLinks(currentPage, totalPages)
 
     return (
         <>
-            <div>
-                <img className="mw-100" src="/images/Homepage-Hero-Desktop-Slot-9.jpg" alt="Home Page" />
-            </div>
+            <Carousel>
+                <Carousel.Item>
+                    <Image className="d-block w-100" src="https://vida.bg/wp-content/uploads/2021/10/VIDA_Banner_BG.jpg" alt="Home Page" />
+                </Carousel.Item>
+                <Carousel.Item>
+                    <Image className="d-block w-100" src="https://vida.bg/wp-content/uploads/2021/10/Spirits_Banner-BG.jpg" alt="Home Page" />
+                </Carousel.Item>
+                <Carousel.Item>
+                    <Image className="d-block w-100" src="http://vida.bg/wp-content/uploads/2022/10/Jim-Beam-EN.jpg" alt="Home Page" />
+                </Carousel.Item>
+                <Carousel.Item>
+                    <Image className="d-block w-100" src="https://vida.bg/wp-content/uploads/2021/09/kraken-category-header.png" alt="Home Page" />
+                </Carousel.Item>
+                <Carousel.Item>
+                    <Image className="d-block w-100" src="https://cdn-ccnlk.nitrocdn.com/FagQESmbWOQjOsPKkgdiNUYIEZTBiuRg/assets/images/optimized/rev-56322ca/wp-content/uploads/2022/10/Beluga-Category-Banner-1920x314-V1-1920x314.jpg" alt="Home Page" />
+                </Carousel.Item>
+            </Carousel>
             <div>
                 <Helmet>
                     <title>shopping well</title>

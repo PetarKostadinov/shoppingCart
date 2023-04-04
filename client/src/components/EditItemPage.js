@@ -1,11 +1,11 @@
-import axios from 'axios';
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { Helmet } from 'react-helmet-async';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import getError from '../util';
 import { Store } from './Store';
+import { updateItem } from '../service/productService';
 
 function EditItemPage() {
     const [name, setName] = useState('');
@@ -25,54 +25,51 @@ function EditItemPage() {
     const { state, dispatch } = useContext(Store);
     const { userInfo, currItem } = state;
 
-
     const submitHandler = async (e) => {
         e.preventDefault();
         dispatch({ type: 'UPDATE_ITEM_REQUEST' });
 
         try {
-
             if (isNaN(e.target.price.value) === true || e.target.price.value < 1) {
-                throw new Error('Price should be a Positive Number')
-            } else if (isNaN(e.target.countMany.value) === true || e.target.countMany.value < 0) {
-                throw new Error('Count should be a Positive Number or 0')
-            } else if (isNaN(e.target.rating.value) === true || e.target.rating.value < 0) {
-                throw new Error('Rating should be a Positive Number or 0')
-            } else if (isNaN(numReviews) === true || numReviews < 0) {
-                throw new Error('Number of Reviews should be a Positive Number or 0')
+                throw new Error('Price should be a Positive Number');
+            } else if (
+                isNaN(e.target.countMany.value) === true ||
+                e.target.countMany.value < 0
+            ) {
+                throw new Error('Count should be a Positive Number or 0');
+            } else if (
+                isNaN(e.target.rating.value) === true ||
+                e.target.rating.value < 0
+            ) {
+                throw new Error('Rating should be a Positive Number or 0');
+            } else if (isNaN(e.target.numReviews.value) === true || e.target.numReviews.value < 0) {
+                throw new Error('Number of Reviews should be a Positive Number or 0');
             }
 
-            const result = await axios.put(
-                `/api/products/${id}/editItem/${e.target.slug.value}`,
-                {
-                    name,
-                    slug,
-                    image,
-                    brand,
-                    category,
-                    description,
-                    price,
-                    countMany,
-                    rating,
-                    numReviews
-                },
-                {
-                    headers: { Authorization: `Bearer ${userInfo.token}` }
-                }
-            );
+            const data = {
+                name,
+                slug,
+                image,
+                brand,
+                category,
+                description,
+                price,
+                countMany,
+                rating,
+                numReviews,
+            };
 
-            dispatch({ type: 'UPDATE_ITEM_SUCCESS', payload: result.data });
-
-            navigate(`/product/${result.data._id}/${result.data.slug}`)
+            const result = await updateItem(id, e.target.slug.value, data, userInfo.token);
+            dispatch({ type: 'UPDATE_ITEM_SUCCESS', payload: result });
+            navigate(`/product/${result._id}/${result.slug}`);
             toast.success('The Item has been updated successfully');
+
         } catch (err) {
-            dispatch({ type: 'UPDATE_ITEM_FAIL' });
 
+            dispatch({ type: 'UPDATE_ITEM_FAIL', payload: err.message });
             toast.error(getError(err));
-
-
         }
-    }
+    };
 
     return (
         <div className="container small-container">
@@ -135,6 +132,7 @@ function EditItemPage() {
                         defaultValue={currItem.price}
                         onChange={(e) => setPrice(e.target.value)}
                         required
+                        type="number"
                     />
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="countMany">
@@ -143,6 +141,7 @@ function EditItemPage() {
                         defaultValue={currItem.countMany}
                         onChange={(e) => setCountMany(e.target.value)}
                         required
+                        type="number"
                     />
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="rating">
@@ -151,6 +150,7 @@ function EditItemPage() {
                         defaultValue={currItem.rating}
                         onChange={(e) => setRating(e.target.value)}
                         required
+                        type="number"
                     />
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="numReviews">
@@ -159,6 +159,7 @@ function EditItemPage() {
                         defaultValue={currItem.numReviews}
                         onChange={(e) => setNumReviews(e.target.value)}
                         required
+                        type="number"
                     />
                 </Form.Group>
                 <div className="mb-3">

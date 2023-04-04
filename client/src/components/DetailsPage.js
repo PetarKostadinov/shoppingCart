@@ -1,15 +1,15 @@
-import axios from 'axios';
 import React, { useContext, useEffect, useReducer } from 'react'
 import { Badge, Button, Card, Col, ListGroup, Row } from 'react-bootstrap';
 import { Helmet } from 'react-helmet-async';
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'react-toastify';
 
+import { Store } from './Store';
+import { deleteProduct, fetchProduct } from '../service/productService';
 import getError from '../util';
 import LoadingComponent from './LoadingComponent';
 import MessageComponent from './MessageComponent';
 import Rating from './Rating';
-import { Store } from './Store';
 
 const reducer = (state, action) => {
     switch (action.type) {
@@ -31,12 +31,11 @@ function ProductScreen() {
     const { id } = params;
 
     const [{ loading, error, product }, dispatch] = useReducer(reducer, {
-
         product: [],
         loading: true,
         error: ''
     });
-////
+
     const { state, dispatch: ctxDispatch } = useContext(Store);
     const { cart, userInfo } = state;
 
@@ -44,9 +43,9 @@ function ProductScreen() {
         const fetchData = async () => {
             dispatch({ type: 'FETCH_REQUEST' });
             try {
-                const result = await axios.get(`/api/products/_id/${id}`);
-                dispatch({ type: 'FETCH_SUCCESS', payload: result.data })
-                ctxDispatch({ type: 'FETCH_SUCCESS_DETAILS', payload: result.data })
+                const result = await fetchProduct(id);
+                dispatch({ type: 'FETCH_SUCCESS', payload: result })
+                ctxDispatch({ type: 'FETCH_SUCCESS_DETAILS', payload: result })
             } catch (err) {
                 dispatch({ type: 'FETCH_FAIL', payload: getError(err) })
             }
@@ -59,10 +58,11 @@ function ProductScreen() {
     const addToCartHandler = async () => {
         const exists = cart.cartItems.find((x) => x._id === product._id);
         const quantity = exists ? exists.quantity + 1 : 1;
-        const { data } = await axios.get(`/api/products/${product._id}`);
+        const data = await fetchProduct(product._id);
 
         if (data.countMany < quantity) {
-            window.alert('Sorry. Product is out of stock')
+            toast.error('Sorry. Product is out of stock')
+            return;
         }
 
         ctxDispatch({ type: 'CART_ADD_ITEM', payload: { ...product, quantity } });
@@ -70,12 +70,11 @@ function ProductScreen() {
         navigate('/cart');
     };
 
-    /////  DELETE
-
     const deleteHandler = async () => {
 
         try {
-            await axios.delete(`/api/products/${product._id}`)
+            await deleteProduct(product._id)
+            
             ctxDispatch({ type: 'CART_REMOVE_ITEM', payload: product });
             toast.success('The Item has been deleted successfully')
             navigate('/');
