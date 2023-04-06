@@ -33,5 +33,30 @@ export async function register(username, email, password) {
     return await response.json();
 }
 
+// profileService.js
 
+export const updateProfile = async (userInfo, username, email, password) => {
+    try {
+      const response = await fetch('/api/users/profile', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+        body: JSON.stringify({ username, email, password }),
+      });
+  
+      if (!response.ok) {
+        throw new Error('Failed to update user profile');
+      }
+  
+      const data = await response.json();
+      return data;
+    } catch (err) {
+      throw new Error(err.message);
+    }
+  };
+  
+ 
+  
 

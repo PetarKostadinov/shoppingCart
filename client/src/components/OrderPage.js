@@ -1,27 +1,27 @@
-import  Axios  from 'axios'
-import React, { useContext, useEffect, useReducer } from 'react'
-import { Button, Card, Col, ListGroup, Row } from 'react-bootstrap'
-import { Helmet } from 'react-helmet-async'
-import { Link, useNavigate } from 'react-router-dom'
-import { toast } from 'react-toastify'
-import getError from '../util'
-import Checkout from './CheckoutSteps'
-import LoadingComponent from './LoadingComponent'
-import { Store } from './Store'
-
+import React, { useContext, useEffect, useReducer, useState } from "react";
+import { Button, Card, Col, ListGroup, Row } from "react-bootstrap";
+import { Helmet } from "react-helmet-async";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import getError from "../util";
+import Checkout from "./CheckoutSteps";
+import LoadingComponent from "./LoadingComponent";
+import { Store } from "./Store";
+import { createOrder } from "../service/orderService";
+import { calculateCartTotals } from "../service/calculateCartTotals";
 
 const reducer = (state, action) => {
     switch (action.type) {
-        case 'CREATE_REQUEST':
-            return { ...state, loading: true }
-        case 'CREATE_SUCCESS':
-            return { ...state, loading: false }
-        case 'CREATE_FAIL':
-            return { ...state, loading: false }
+        case "CREATE_REQUEST":
+            return { ...state, loading: true };
+        case "CREATE_SUCCESS":
+            return { ...state, loading: false };
+        case "CREATE_FAIL":
+            return { ...state, loading: false };
         default:
             return state;
     }
-}
+};
 
 function Order() {
     const navigate = useNavigate();
@@ -30,48 +30,41 @@ function Order() {
     const { cart, userInfo } = state;
 
     const round2 = (num) => Math.round(num * 100 + Number.EPSILON) / 100;
-    cart.itemsPrice = round2(cart.cartItems.reduce((a, c) => a + c.quantity * c.price, 0));
+    cart.itemsPrice = round2(
+        cart.cartItems.reduce((a, c) => a + c.quantity * c.price, 0)
+    );
 
     cart.shippingPrice = cart.itemsPrice > 100 ? round2(0) : round2(10);
     cart.taxPrice = round2(0.15 * cart.itemsPrice);
     cart.totalPrice = cart.itemsPrice + cart.shippingPrice + cart.taxPrice;
 
+    const [loadingOrder, setLoadingOrder] = useState(false);
+
+    useEffect(() => {
+        calculateCartTotals(cart);
+    }, [cart]);
+
     const placeOrderHandler = async () => {
         try {
-            dispatch({ type: 'CREATE_REQUEST' })
+            dispatch({ type: "CREATE_REQUEST" });
+            setLoadingOrder(true);
 
-            const { data } = await Axios.post(
-                '/api/orders',
-                {
-                    orderItems: cart.cartItems,
-                    shippingInfo: cart.shippingInfo,
-                    paymentMethod: cart.paymentMethod,
-                    itemsPrice: cart.itemsPrice,
-                    shippingPrice: cart.shippingPrice,
-                    taxPrice: cart.taxPrice,
-                    totalPrice: cart.totalPrice
-                },
-                {
-                    headers: {
-                        authorization: `Bearer ${userInfo.token}`
-                    }
-                }
-            );
-            ctxDispatch({ type: 'CART_CLEAR' });
-            dispatch({ type: 'CREATE_SUCCESS' });
-            localStorage.removeItem('cartItems');
+            const data = await createOrder(cart, userInfo);
+            ctxDispatch({ type: "CART_CLEAR" });
+            dispatch({ type: "CREATE_SUCCESS" });
+            localStorage.removeItem("cartItems");
             navigate(`/order/${data.order._id}`);
-
         } catch (err) {
-            dispatch({ type: 'CREATE_FAIL' });
-            console.log(err)
+            dispatch({ type: "CREATE_FAIL" });
             toast.error(getError(err));
+        } finally {
+            setLoadingOrder(false);
         }
     };
 
     useEffect(() => {
         if (!cart.paymentMethod) {
-            navigate('/payment');
+            navigate("/payment");
         }
     }, [cart, navigate]);
 

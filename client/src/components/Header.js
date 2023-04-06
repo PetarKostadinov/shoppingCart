@@ -1,10 +1,9 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import { Badge, Button, Container, Nav, Navbar, NavDropdown } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
 import { Link } from 'react-router-dom'
 import { Store } from './Store';
 import SearchInput from "./SearchInput";
-import axios from 'axios';
 import { toast } from 'react-toastify';
 import getError from '../util';
 import { getCategories } from '../service/productService';
@@ -26,26 +25,42 @@ function Header() {
         window.location.href = '/login';
     };
 
+    const sideBarRef = useRef(null);
+
+    const handleOutsideClick = (event) => {
+        if (sideBarRef.current && !sideBarRef.current.contains(event.target)) {
+            setSideBarIsOpen(false);
+        }
+    };
+
     useEffect(() => {
         const fetchCategories = async () => {
-          try {
-            const data = await getCategories();
-            setCategories(data);
+            try {
+                const data = await getCategories();
+                setCategories(data);
 
-          } catch (err) {
+            } catch (err) {
 
-            toast.error(getError(err));
-          }
+                toast.error(getError(err));
+            }
         };
         fetchCategories();
-      }, [])
+    }, [])
+
+    useEffect(() => {
+        document.addEventListener('click', handleOutsideClick, true);
+        return () => {
+            document.removeEventListener('click', handleOutsideClick, true);
+        };
+    }, []);
 
     return (
         <>
             <header>
-                <Navbar  variant="dark" expand="lg" style={{ backgroundColor: 'rgba(53, 50, 50, 0.8)' }}>
+                <Navbar variant="dark" expand="lg" style={{ backgroundColor: 'rgba(53, 50, 50, 0.8)' }}>
                     <Container>
                         <Button
+                            className='m-5'
                             variant="dark"
                             onClick={() => setSideBarIsOpen(!sideBarIsOpen)}
                         >
@@ -53,7 +68,7 @@ function Header() {
                         </Button>
                         <LinkContainer to="/">
                             <Navbar.Brand>
-                                <img src="/images/linkedin_banner_image_2.png" alt="shopping well"  className="w-100" />
+                                <img src="/images/linkedin_banner_image_2.png" alt="shopping well" className="w-100" />
                             </Navbar.Brand>
                         </LinkContainer>
                         <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -115,6 +130,7 @@ function Header() {
                 </Navbar>
             </header>
             <div
+                ref={sideBarRef}
                 className={
                     sideBarIsOpen ?
                         'active-nav side-navbar d-flex justify-content-between flex-wrap flex-column'
@@ -126,7 +142,29 @@ function Header() {
                         <strong>Categories</strong>
                     </Nav.Item>
                     {categories.map((category) => (
-                        <Nav.Item  key={category}>
+                        <Nav.Item key={category}>
+                            <LinkContainer to={`/search?category=${category}`} onClick={() => setSideBarIsOpen(false)}>
+                                <Nav.Link className="nav-link-class">{category}</Nav.Link>
+                            </LinkContainer>
+                        </Nav.Item>
+                    ))}
+                </Nav>
+
+            </div>
+            <div
+                ref={sideBarRef}
+                className={
+                    sideBarIsOpen ?
+                        'active-nav side-navbar d-flex justify-content-between flex-wrap flex-column'
+                        : 'side-navbar d-flex justify-content-between flex-wrap flex-column'
+                }
+            >
+                <Nav className="flex-column text-white w-100 p-2">
+                    <Nav.Item>
+                        <strong>Categories</strong>
+                    </Nav.Item>
+                    {categories.map((category) => (
+                        <Nav.Item key={category}>
                             <LinkContainer to={`/search?category=${category}`} onClick={() => setSideBarIsOpen(false)}>
                                 <Nav.Link className="nav-link-class">{category}</Nav.Link>
                             </LinkContainer>

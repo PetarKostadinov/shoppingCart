@@ -10,8 +10,6 @@ export async function fetchProducts(page, limit) {
     return data;
   }
   
-
-  
 export const createProduct = async (userInfo, item) => {
   try {
     const response = await fetch('/api/products/create', {
@@ -34,7 +32,6 @@ export const createProduct = async (userInfo, item) => {
     throw new toast.error(getError(err));
   }
 }
-
 
 export const deleteProduct = async (id) => {
   const response = await fetch(`/api/products/${id}`, {
@@ -81,6 +78,19 @@ export async function getCategories() {
   }
   return await response.json();
 }
+
+export const getProduct = async (id) => {
+  try {
+    const response = await fetch(`/api/products/${id}`);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error fetching product:', error);
+  }
+};
 
 
 

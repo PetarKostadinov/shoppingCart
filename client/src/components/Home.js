@@ -8,7 +8,7 @@ import MessageComponent from './MessageComponent';
 import { fetchProducts } from '../service/productService';
 import { useLocation } from 'react-router-dom';
 import { generatePaginationLinks } from '../service/paginationService';
-import { Carousel, Container, Image } from 'react-bootstrap';
+import { Carousel, Image } from 'react-bootstrap';
 
 const reducer = (state, action) => {
     switch (action.type) {
@@ -104,7 +104,7 @@ function Home() {
                         </>
                     )}
                 </div>
-                <div className="d-flex justify-content-center">
+                <div className="d-flex justify-content-center mt-5">
                     <div className="btn-group">{paginationLinks}</div>
                 </div>
             </div>

@@ -1,60 +1,55 @@
-import axios from 'axios';
-import React, { useContext, useReducer, useState } from 'react'
+import React, { useContext, useReducer, useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { Helmet } from 'react-helmet-async';
 import { toast } from 'react-toastify';
 import getError from '../util';
 import { Store } from './Store';
+import {updateProfile} from '../service/userService';
 
 const reducer = (state, action) => {
-    switch (action.type) {
-        case 'UPDATE_REQUEST':
-            return { ...state, loadingUpdate: true };
-        case 'UPDATE_SUCCESS':
-            return { ...state, loadingUpdate: false };
-        case 'UPDATE_FAIL':
-            return { ...state, loadingUpdate: false };
-        default:
-            return state;
-    }
-}
+  switch (action.type) {
+    case 'UPDATE_REQUEST':
+      return { ...state, loadingUpdate: true };
+    case 'UPDATE_SUCCESS':
+      return { ...state, loadingUpdate: false };
+    case 'UPDATE_FAIL':
+      return { ...state, loadingUpdate: false };
+    default:
+      return state;
+  }
+};
 
 function Profile() {
-    const { state, dispatch: ctxDispatch } = useContext(Store);
-    const { userInfo } = state;
-    const [username, setUsername] = useState(userInfo.username);
-    const [email, setEmail] = useState(userInfo.email);
-    const [password, setPassword] = useState('');
-    const [repass, setRepass] = useState('');
+  const { state, dispatch: ctxDispatch } = useContext(Store);
+  const { userInfo } = state;
+  const [username, setUsername] = useState(userInfo.username);
+  const [email, setEmail] = useState(userInfo.email);
+  const [password, setPassword] = useState('');
+  const [repass, setRepass] = useState('');
 
-    const [{ loadingUpdate }, dispatch] = useReducer(reducer, {
-        loadingUpdate: false
-    })
+  const [{ loadingUpdate }, dispatch] = useReducer(reducer, {
+    loadingUpdate: false,
+  });
 
-    const submitHandler = async (e) => {
-        e.preventDefault();
-        try {
-            const { data } = await axios.put(
-                '/api/users/profile',
-                {
-                    username,
-                    email,
-                    password
-                },
-                {
-                    headers: { Authorization: `Bearer ${userInfo.token}` }
-                }
-            );
-            dispatch({ type: 'UPDATE_SUCCESS' });
-            ctxDispatch({ type: 'USER_LOGIN', payload: data });
-            localStorage.setItem('userInfo', JSON.stringify(data));
-            toast.success('User updated successfully');
-
-        } catch (err) {
-            dispatch({ type: 'FETCH_FAIL' });
-            toast.error(getError(err));
-        }
+  const submitHandler = async (e) => {
+    e.preventDefault();
+    try {
+      dispatch({ type: 'UPDATE_REQUEST' });
+      const data = await updateProfile(
+        userInfo,
+        username,
+        email,
+        password
+      );
+      dispatch({ type: 'UPDATE_SUCCESS' });
+      ctxDispatch({ type: 'USER_LOGIN', payload: data });
+      localStorage.setItem('userInfo', JSON.stringify(data));
+      toast.success('User updated successfully');
+    } catch (err) {
+      dispatch({ type: 'UPDATE_FAIL' });
+      toast.error(getError(err));
     }
+  };
 
     return (
         <div className="container small-container">
@@ -71,7 +66,7 @@ function Profile() {
                         required
                     />
                 </Form.Group>
-                <Form.Group className="mb-3" controlId="username">
+                <Form.Group className="mb-3" controlId="email">
                     <Form.Label>Email</Form.Label>
                     <Form.Control
                         type="email"
@@ -88,7 +83,7 @@ function Profile() {
 
                     />
                 </Form.Group>
-                <Form.Group className="mb-3" controlId="password">
+                <Form.Group className="mb-3" controlId="rePassword">
                     <Form.Label>Repeat Password</Form.Label>
                     <Form.Control
                         type="password"

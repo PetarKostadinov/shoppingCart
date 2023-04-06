@@ -115,7 +115,6 @@ function OrderSummary() {
             loadPaypalScript();
         }
     }, [order, userInfo, orderId, navigate, paypalDispatch, successPay]);
-    
 
     return (
         loading ? (<LoadingComponent></LoadingComponent>)
@@ -243,3 +242,6 @@ function OrderSummary() {
 }
 
 export default OrderSummary;
+
+
+

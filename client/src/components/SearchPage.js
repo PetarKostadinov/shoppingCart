@@ -1,4 +1,4 @@
-import axios from 'axios';
+
 import React, { useEffect, useReducer, useState } from 'react'
 import { Button, Col, Row } from 'react-bootstrap';
 import { Helmet } from 'react-helmet-async';
@@ -10,6 +10,8 @@ import LoadingComponent from './LoadingComponent';
 import MessageComponent from './MessageComponent';
 import Product from './Product';
 import Rating from './Rating';
+import { getProducts } from '../service/searchService';
+import { getCategories } from '../service/searchService';
 
 const reducer = (state, action) => {
     switch (action.type) {
@@ -70,49 +72,50 @@ function SearchPage() {
     const navigate = useNavigate();
     const { search } = useLocation();
     const sp = new URLSearchParams(search);
-    
+  
     const category = sp.get('category') || 'all';
     const query = sp.get('query') || 'all';
     const price = sp.get('price') || 'all';
     const rating = sp.get('rating') || 'all';
     const order = sp.get('order') || 'newest';
     const page = sp.get('page') || 1;
-
+  
     const [{ loading, error, products, pages, countProducts }, dispatch] = useReducer(reducer, {
-        loading: true,
-        error: ''
+      loading: true,
+      error: ''
     });
-
+  
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const { data } = await axios.get(
-                    `/api/products/search?page=${page}&query=${query}&category=${category}&price=${price}&rating=${rating}&order=${order}`
-                );
-                dispatch({ type: 'FETCH_SUCCESS', payload: data });
-            } catch (err) {
-                dispatch({ type: 'FETCH_FAIL', payload: getError(err) });
-            }
-        };
-        fetchData();
+      const fetchData = async () => {
+        dispatch({ type: 'FETCH_REQUEST' });
+  
+        try {
+            const data = await getProducts({ page, category, query, price, rating, order });
+            dispatch({ type: 'FETCH_SUCCESS', payload: data });
+        } catch (err) {
+          dispatch({ type: 'FETCH_FAIL', payload: getError(err) });
+        }
+      };
+  
+      fetchData();
     }, [category, error, order, page, price, query, rating]);
-
+  
     const [categories, setCategories] = useState([]);
 
     useEffect(() => {
         const fetchCategories = async () => {
-            try {
-                const { data } = await axios.get(`/api/products/categories`);
-                setCategories(data);
-            } catch (err) {
-                toast.error(getError(err));
-            }
+          try {
+            const categories = await getCategories();
+            setCategories(categories);
+          } catch (err) {
+            toast.error(getError(err));
+          }
         };
         fetchCategories();
-    }, [dispatch]);
-
+      }, [dispatch]);
+    
     const getFilterUrl = (filter) => {
-        const filterPage = filter.page || page;
+        const filterPage = filter.page || 1;
         const filterCategory = filter.category || category;
         const filterQuery = filter.query || query;
         const filterRating = filter.rating || rating;
@@ -121,8 +124,6 @@ function SearchPage() {
 
         return `/search?category=${filterCategory}&query=${filterQuery}&price=${filterPrice}&rating=${filterRating}&order=${sortOrder}&page=${filterPage}`;
     }
-
-
 
     return (
         <div className="h-100">

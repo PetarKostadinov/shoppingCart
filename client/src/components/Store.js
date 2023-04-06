@@ -58,8 +58,6 @@ function reducer(state, action) {
         case 'UPDATE_ITEM_REQUEST':
             return { ...state, loadingUpdate: true, itemToEditDb: action.payload };
         case 'UPDATE_ITEM_SUCCESS':
-            //const currItem = action.payload
-           // localStorage.setItem('currItem', JSON.stringify(currItem))
             return { ...state, itemToEditDb: action.payload, loadingUpdate: false };
 
         case 'UPDATE_ITEM_FAIL':

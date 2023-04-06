@@ -58,7 +58,7 @@ function CartScreen() {
                                             ></img>{' '}
                                             <Link
                                                 className="hov"
-                                                to={`/product/${x.slug}`}
+                                                to={`/product/${x._id}/${x.slug}`}
                                             >
                                                 {x.name}
                                             </Link>
