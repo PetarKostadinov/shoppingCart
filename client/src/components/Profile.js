@@ -33,13 +33,18 @@ function Profile() {
 
   const submitHandler = async (e) => {
     e.preventDefault();
+    
     try {
+      if(password !== repass) {
+        throw new Error('Paswords don\'t match!')
+      }
       dispatch({ type: 'UPDATE_REQUEST' });
       const data = await updateProfile(
         userInfo,
         username,
         email,
-        password
+        password,
+        repass
       );
       dispatch({ type: 'UPDATE_SUCCESS' });
       ctxDispatch({ type: 'USER_LOGIN', payload: data });
@@ -47,7 +52,7 @@ function Profile() {
       toast.success('User updated successfully');
     } catch (err) {
       dispatch({ type: 'UPDATE_FAIL' });
-      toast.error(getError(err));
+      toast.error(getError(err) || err);
     }
   };
 

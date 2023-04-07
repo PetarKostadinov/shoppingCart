@@ -8,7 +8,6 @@ import MessageComponent from './MessageComponent';
 import { fetchProducts } from '../service/productService';
 import { useLocation } from 'react-router-dom';
 import { generatePaginationLinks } from '../service/paginationService';
-import { Carousel, Image } from 'react-bootstrap';
 
 const reducer = (state, action) => {
     switch (action.type) {
@@ -62,25 +61,13 @@ function Home() {
 
     const paginationLinks = generatePaginationLinks(currentPage, totalPages)
 
+    const handleNextPageClick = () => {
+        setCurrentPage(currentPage + 1);
+        window.scrollTo(0, 0); // Scroll to top of window
+    }
+
     return (
         <>
-            <Carousel>
-                <Carousel.Item>
-                    <Image className="d-block w-100" src="https://vida.bg/wp-content/uploads/2021/10/VIDA_Banner_BG.jpg" alt="Home Page" />
-                </Carousel.Item>
-                <Carousel.Item>
-                    <Image className="d-block w-100" src="https://vida.bg/wp-content/uploads/2021/10/Spirits_Banner-BG.jpg" alt="Home Page" />
-                </Carousel.Item>
-                <Carousel.Item>
-                    <Image className="d-block w-100" src="http://vida.bg/wp-content/uploads/2022/10/Jim-Beam-EN.jpg" alt="Home Page" />
-                </Carousel.Item>
-                <Carousel.Item>
-                    <Image className="d-block w-100" src="https://vida.bg/wp-content/uploads/2021/09/kraken-category-header.png" alt="Home Page" />
-                </Carousel.Item>
-                <Carousel.Item>
-                    <Image className="d-block w-100" src="https://cdn-ccnlk.nitrocdn.com/FagQESmbWOQjOsPKkgdiNUYIEZTBiuRg/assets/images/optimized/rev-56322ca/wp-content/uploads/2022/10/Beluga-Category-Banner-1920x314-V1-1920x314.jpg" alt="Home Page" />
-                </Carousel.Item>
-            </Carousel>
             <div>
                 <Helmet>
                     <title>shopping well</title>
@@ -105,7 +92,7 @@ function Home() {
                     )}
                 </div>
                 <div className="d-flex justify-content-center mt-5">
-                    <div className="btn-group">{paginationLinks}</div>
+                    <div className="btn-group" onClick={() => handleNextPageClick()}>{paginationLinks}</div>
                 </div>
             </div>
         </>

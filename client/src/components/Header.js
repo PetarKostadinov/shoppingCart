@@ -22,7 +22,7 @@ function Header() {
         localStorage.removeItem('paymentMethod');
         localStorage.removeItem('productsOnList');
         localStorage.clear()
-        window.location.href = '/login';
+        window.location.href = '/';
     };
 
     const sideBarRef = useRef(null);
@@ -60,9 +60,9 @@ function Header() {
                 <Navbar variant="dark" expand="lg" style={{ backgroundColor: 'rgba(53, 50, 50, 0.8)' }}>
                     <Container>
                         <Button
-                            className='m-5'
+                            className='m-3'
                             variant="dark"
-                            onClick={() => setSideBarIsOpen(!sideBarIsOpen)}
+                            onClick={() => setSideBarIsOpen(!sideBarIsOpen) }
                         >
                             <i className="fas fa-bars"></i>
                         </Button>
@@ -101,9 +101,14 @@ function Header() {
                                         </Link>
                                     </NavDropdown>
                                 ) : (
-                                    <Link className="nav-link" to="/login">
-                                        Login
-                                    </Link>
+                                    <>
+                                        <Link className="nav-link" to="/login">
+                                            Login
+                                        </Link>
+                                        <Link className="nav-link" to="/register">
+                                            Register
+                                        </Link>
+                                    </>
                                 )}
                                 {userInfo && userInfo.isAdmin && (
                                     <NavDropdown title="Admin" id="admin-nav-dropdown">
@@ -143,39 +148,15 @@ function Header() {
                     </Nav.Item>
                     {categories.map((category) => (
                         <Nav.Item key={category}>
-                            <LinkContainer to={`/search?category=${category}`} onClick={() => setSideBarIsOpen(false)}>
+                            <LinkContainer to={`/search?category=${category}`} onClick={() => handleOutsideClick(true)}>
                                 <Nav.Link className="nav-link-class">{category}</Nav.Link>
                             </LinkContainer>
                         </Nav.Item>
                     ))}
                 </Nav>
 
-            </div>
-            <div
-                ref={sideBarRef}
-                className={
-                    sideBarIsOpen ?
-                        'active-nav side-navbar d-flex justify-content-between flex-wrap flex-column'
-                        : 'side-navbar d-flex justify-content-between flex-wrap flex-column'
-                }
-            >
-                <Nav className="flex-column text-white w-100 p-2">
-                    <Nav.Item>
-                        <strong>Categories</strong>
-                    </Nav.Item>
-                    {categories.map((category) => (
-                        <Nav.Item key={category}>
-                            <LinkContainer to={`/search?category=${category}`} onClick={() => setSideBarIsOpen(false)}>
-                                <Nav.Link className="nav-link-class">{category}</Nav.Link>
-                            </LinkContainer>
-                        </Nav.Item>
-                    ))}
-                </Nav>
-
-            </div>
+            </div> 
         </>
-
-
     )
 }
 

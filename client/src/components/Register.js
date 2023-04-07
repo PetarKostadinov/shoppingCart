@@ -5,7 +5,7 @@ import { Helmet } from 'react-helmet-async';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Store } from './Store';
 import { toast } from 'react-toastify';
-import {register} from '../service/userService';
+import { register } from '../service/userService';
 
 function Register() {
     const navigate = useNavigate();
@@ -26,6 +26,7 @@ function Register() {
             toast.error('Passwords don\'t match');
             return;
         }
+
         try {
             const data = await register(username, email, password);
 
@@ -33,7 +34,12 @@ function Register() {
             localStorage.setItem('userInfo', JSON.stringify(data));
             navigate(redirect || '/');
         } catch (err) {
-            toast.error(err.message);
+
+            if ((err.message).includes('email')) {
+                toast.error('Invalid Email!');
+            } else {
+                toast.error('Invalid Username or Password!');
+            }
         }
     };
 

@@ -33,7 +33,7 @@ body {
 
 main {
   flex: 1;
- 
+
 }
 
 .btn-primary,
@@ -52,6 +52,10 @@ main {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+}
+
+.price{
+  color: azure;
 }
 
 .rating span {
@@ -127,10 +131,15 @@ main {
   width: 140px;
   height: 100%;
   position: absolute;
-  left: -300px;
+  left: -140px; 
   background-color: rgba(53, 50, 50, 0.8);
   transition: 0.5s;
-  
+  z-index: 2; 
+  padding-top: 100px;
+}
+
+.carousel{
+  z-index: 1;
 }
 
 .site-container {
@@ -162,4 +171,3 @@ a {
   margin-left: 105px;
  
 } */
-

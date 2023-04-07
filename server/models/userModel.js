@@ -4,7 +4,7 @@ const EMAIL_PATTERN = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
 
 const userSchema = new Schema(
     {
-        username: { type: String, required: true },
+        username: { type: String, required: true},
         email: {
             type: String, required: true, validate: {
                 validator(value) {
