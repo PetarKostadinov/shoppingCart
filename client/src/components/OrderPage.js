@@ -1,4 +1,5 @@
-import React, { useContext, useEffect, useReducer, useState } from "react";
+
+import React, { useContext, useEffect, useState } from "react";
 import { Button, Card, Col, ListGroup, Row } from "react-bootstrap";
 import { Helmet } from "react-helmet-async";
 import { Link, useNavigate } from "react-router-dom";
@@ -10,22 +11,8 @@ import { Store } from "./Store";
 import { createOrder } from "../service/orderService";
 import { calculateCartTotals } from "../service/calculateCartTotals";
 
-const reducer = (state, action) => {
-    switch (action.type) {
-        case "CREATE_REQUEST":
-            return { ...state, loading: true };
-        case "CREATE_SUCCESS":
-            return { ...state, loading: false };
-        case "CREATE_FAIL":
-            return { ...state, loading: false };
-        default:
-            return state;
-    }
-};
-
 function Order() {
     const navigate = useNavigate();
-    const [{ loading }, dispatch] = useReducer(reducer, { loading: false });
     const { state, dispatch: ctxDispatch } = useContext(Store);
     const { cart, userInfo } = state;
 
@@ -38,6 +25,7 @@ function Order() {
     cart.taxPrice = round2(0.15 * cart.itemsPrice);
     cart.totalPrice = cart.itemsPrice + cart.shippingPrice + cart.taxPrice;
 
+    const [loading, setLoading] = useState(false);
     const [loadingOrder, setLoadingOrder] = useState(false);
 
     useEffect(() => {
@@ -46,16 +34,14 @@ function Order() {
 
     const placeOrderHandler = async () => {
         try {
-            dispatch({ type: "CREATE_REQUEST" });
             setLoadingOrder(true);
-
             const data = await createOrder(cart, userInfo);
             ctxDispatch({ type: "CART_CLEAR" });
-            dispatch({ type: "CREATE_SUCCESS" });
+            setLoading(false);
             localStorage.removeItem("cartItems");
             navigate(`/order/${data.order._id}`);
         } catch (err) {
-            dispatch({ type: "CREATE_FAIL" });
+            setLoading(false);
             toast.error(getError(err));
         } finally {
             setLoadingOrder(false);
@@ -67,7 +53,6 @@ function Order() {
             navigate("/payment");
         }
     }, [cart, navigate]);
-
     return (
         <div>
             <Checkout step1 step2 step3 step4></Checkout>

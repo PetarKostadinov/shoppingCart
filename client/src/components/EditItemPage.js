@@ -28,7 +28,7 @@ function EditItemPage() {
     const submitHandler = async (e) => {
         e.preventDefault();
         dispatch({ type: 'UPDATE_ITEM_REQUEST' });
-
+console.log(state)
         try {
             if (isNaN(e.target.price.value) === true || e.target.price.value < 1) {
                 throw new Error('Price should be a Positive Number');

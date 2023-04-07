@@ -17,10 +17,6 @@ function Header() {
 
     const logoutHandler = () => {
         ctxDispatch({ type: 'USER_LOGOUT' });
-        localStorage.removeItem('userInfo');
-        localStorage.removeItem('shippingInfo');
-        localStorage.removeItem('paymentMethod');
-        localStorage.removeItem('productsOnList');
         localStorage.clear()
         window.location.href = '/';
     };
@@ -160,4 +156,4 @@ function Header() {
     )
 }
 
-export default Header
+export default Header;

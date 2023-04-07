@@ -22,7 +22,7 @@ userRouter.post('/login', expressAsyncHandler(async (req, res) => {
             return;
         }
     }
-    
+
     res.status(401).send({ message: 'Invalid email or password', status: 401 });
 }));
 
@@ -46,7 +46,15 @@ userRouter.post('/register', expressAsyncHandler(async (req, res) => {
 
 userRouter.put('/profile', auth, expressAsyncHandler(async (req, res) => {
     const user = await User.findById(req.user._id);
+
     if (user) {
+
+        const emailExists = await User.findOne({ email: req.body.email });
+
+        if (emailExists) {
+            res.send({ message: 'Email exists!', status: 409 });
+        }
+
         user.username = req.body.username || user.username;
         user.email = req.body.email || user.email;
         user.password = req.body.password || user.password;
@@ -63,11 +71,11 @@ userRouter.put('/profile', auth, expressAsyncHandler(async (req, res) => {
             password: updatedUser.password,
             repass: updatedUser.repass,
             isAdmin: updatedUser.isAdmin,
-            token:generateToken(updatedUser)
+            token: generateToken(updatedUser)
         });
 
-    }else{
-        res.status(404).send({message: 'User Not Found'})
+    } else {
+        res.status(404).send({ message: 'User Not Found' })
     }
 }));
 

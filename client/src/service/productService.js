@@ -1,5 +1,3 @@
-import { toast } from "react-toastify";
-import getError from '../util';
 
 export async function fetchProducts(page, limit) {
     const response = await fetch(`/api/products?page=${page}&limit=${limit}`);

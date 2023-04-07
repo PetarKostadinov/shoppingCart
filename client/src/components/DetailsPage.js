@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useReducer } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { Badge, Button, Card, Col, ListGroup, Row } from 'react-bootstrap';
 import { Helmet } from 'react-helmet-async';
 import { Link, useNavigate, useParams } from 'react-router-dom'
@@ -11,43 +11,30 @@ import LoadingComponent from './LoadingComponent';
 import MessageComponent from './MessageComponent';
 import Rating from './Rating';
 
-const reducer = (state, action) => {
-    switch (action.type) {
-        case 'FETCH_REQUEST':
-            return { ...state, loading: true };
-        case 'FETCH_SUCCESS':
-            return { ...state, product: action.payload, loading: false };
-        case 'FETCH_FAIL':
-            return { ...state, loading: false, error: action.payload };
-        default:
-            return state;
-    }
-}
-
 function ProductScreen() {
     const navigate = useNavigate();
 
     const params = useParams();
     const { id } = params;
 
-    const [{ loading, error, product }, dispatch] = useReducer(reducer, {
-        product: [],
-        loading: true,
-        error: ''
-    });
-
     const { state, dispatch: ctxDispatch } = useContext(Store);
     const { cart, userInfo } = state;
 
+    const [loading, setLoading] = React.useState(true);
+    const [error, setError] = React.useState('');
+    const [product, setProduct] = React.useState([]);
+
     useEffect(() => {
         const fetchData = async () => {
-            dispatch({ type: 'FETCH_REQUEST' });
+            setLoading(true);
             try {
                 const result = await fetchProduct(id);
-                dispatch({ type: 'FETCH_SUCCESS', payload: result })
+                setProduct(result);
+                setLoading(false);
                 ctxDispatch({ type: 'FETCH_SUCCESS_DETAILS', payload: result })
             } catch (err) {
-                dispatch({ type: 'FETCH_FAIL', payload: getError(err) })
+                setError(getError(err));
+                setLoading(false);
             }
         };
 
@@ -66,7 +53,6 @@ function ProductScreen() {
         }
 
         ctxDispatch({ type: 'CART_ADD_ITEM', payload: { ...product, quantity } });
-
         navigate('/cart');
     };
 
@@ -74,7 +60,7 @@ function ProductScreen() {
 
         try {
             await deleteProduct(product._id)
-            
+
             ctxDispatch({ type: 'CART_REMOVE_ITEM', payload: product });
             toast.success('The Item has been deleted successfully')
             navigate('/');

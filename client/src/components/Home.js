@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Product from './Product';
@@ -9,18 +9,7 @@ import { fetchProducts } from '../service/productService';
 import { useLocation } from 'react-router-dom';
 import { generatePaginationLinks } from '../service/paginationService';
 
-const reducer = (state, action) => {
-    switch (action.type) {
-        case 'FETCH_REQUEST':
-            return { ...state, loading: true };
-        case 'FETCH_SUCCESS':
-            return { ...state, products: action.payload, totalPages: Math.ceil(action.payload.length / 6), loading: false };
-        case 'FETCH_FAIL':
-            return { ...state, loading: false, error: action.payload };
-        default:
-            return state;
-    }
-};
+const productsToShow = 6;
 
 function useQuery() {
     return new URLSearchParams(useLocation().search);
@@ -28,30 +17,30 @@ function useQuery() {
 
 function Home() {
     const [currentPage, setCurrentPage] = useState(1);
-    const [{ loading, error, products, totalPages, productsPerPage }, dispatch] = useReducer(reducer, {
-        products: [],
-        totalPages: 1,
-        loading: true,
-        error: '',
-        productsPerPage: 6,
-    });
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState('');
+    const [products, setProducts] = useState([]);
+    const [totalPages, setTotalPages] = useState(1);
+    const [productsPerPage, setProductsPerPage] = useState(productsToShow);
 
     const query = useQuery();
     const page = parseInt(query.get("page")) || 1;
 
     useEffect(() => {
         const fetchData = async () => {
-            dispatch({ type: 'FETCH_REQUEST' });
+            setLoading(true);
             try {
                 const data = await fetchProducts(currentPage, productsPerPage);
-                dispatch({ type: 'FETCH_SUCCESS', payload: data });
+                setProducts(data);
+                setTotalPages(Math.ceil(data.length / productsToShow));
+                setLoading(false);
             } catch (err) {
-                dispatch({ type: 'FETCH_FAIL', payload: err.message });
+                setError(err.message);
+                setLoading(false);
             }
         };
 
         setCurrentPage(page);
-
         fetchData();
     }, [currentPage, productsPerPage, page]);
 
@@ -59,7 +48,7 @@ function Home() {
     const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
     const currentProducts = products.slice(indexOfFirstProduct, indexOfLastProduct);
 
-    const paginationLinks = generatePaginationLinks(currentPage, totalPages)
+    const paginationLinks = generatePaginationLinks(currentPage, totalPages);
 
     const handleNextPageClick = () => {
         setCurrentPage(currentPage + 1);

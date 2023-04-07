@@ -51,7 +51,7 @@ export const updateProfile = async (userInfo, username, email, password, repass)
     });
 
     if (!response.ok) {
-      throw new Error('Failed to update user profile');
+      throw new Error(response.message);
     }
 
     const data = await response.json();
