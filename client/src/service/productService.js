@@ -22,14 +22,14 @@ export const createProduct = async (userInfo, item) => {
     });
 
     if (!response.ok) {
-      throw new Error('Network response was not ok');
+      throw new Error(response.message);
     }
 
     const data = await response.json();
     return data;
 
   } catch (err) {
-    throw new toast.error(getError(err));
+    throw new Error(err);
   }
 }
 
@@ -64,8 +64,8 @@ export const updateItem = async (id, slug, data, token) => {
   });
 
   if (!response.ok) {
-    const message = `An error has occurred: ${response.status}`;
-    throw new Error(message);
+    //const message = `An error has occurred: ${response.status}`;
+    throw new Error(response);
   }
 
   return response.json();

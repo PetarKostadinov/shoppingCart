@@ -22,16 +22,16 @@ productRouter.get('/products', (req, res) => {
     const end = start + perPage;
     const paginatedPosts = posts.slice(start, end);
     const totalPages = Math.ceil(posts.length / perPage);
-  
+
     res.json({
-      posts: paginatedPosts,
-      page,
-      totalPages,
+        posts: paginatedPosts,
+        page,
+        totalPages,
     });
-  });
-  
- 
-  
+});
+
+
+
 
 const PAGE_SIZE = 3;
 productRouter.get('/search', expressAsyncHandler(async (req, res) => {
@@ -119,31 +119,19 @@ productRouter.get('/:id', async (req, res) => {
 productRouter.post('/create', expressAsyncHandler(async (req, res) => {
 
     const currProduct = await Product.find({});
+
     if (currProduct) {
         const nameExists = currProduct.find(x => x.name === req.body.name);
 
         if (nameExists) {
-            throw new Error('Product with the same Name already in the list!');
+            res.send({ message: 'Product with the same Name already in the list!', status: 409  });
         }
 
         const slugExists = currProduct.find(x => x.slug === req.body.slug);
 
         if (slugExists) {
-            throw new Error('Product with the same Slug already in the list!');
+            res.send({ message: 'Product with the same Slug already in the list!', status: 409 });
         }
-    }
-
-    if (req.body.name === ''
-        || req.body.slug === ''
-        || req.body.image === ''
-        || req.body.brand === ''
-        || req.body.category === ''
-        || req.body.descriptio === ''
-        || req.body.price === ''
-        || req.body.countMany === ''
-        || req.body.rating === ''
-        || req.body.numReviews === '') {
-        throw new Error('All fields are required!');
     }
 
     const newProduct = new Product({
@@ -178,7 +166,7 @@ productRouter.post('/create', expressAsyncHandler(async (req, res) => {
 
 productRouter.delete('/:id', async (req, res) => {
     const id = req.params.id
-     await Product.findByIdAndDelete(id)
+    await Product.findByIdAndDelete(id)
 
     res.send({ message: 'Item Deleted' })
 });
@@ -190,13 +178,13 @@ productRouter.put('/:id/editItem/:slug', auth, expressAsyncHandler(async (req, r
         const nameExists = currProduct.find(x => x.name === req.body.name);
 
         if (nameExists) {
-            throw new Error('Product with the same Name already in the list!');
+            res.send({message:'Product with the same Name already in the list!', status: 409});
         }
 
         const slugExists = currProduct.find(x => x.slug === req.body.slug);
 
         if (slugExists) {
-            throw new Error('Product with the same Slug already in the list!');
+            res.send({message:'Product with the same Slug already in the list!', status: 409});
         }
     }
 
@@ -208,11 +196,11 @@ productRouter.put('/:id/editItem/:slug', auth, expressAsyncHandler(async (req, r
         item.brand = req.body.brand || item.brand;
         item.category = req.body.category || item.category;
         item.description = req.body.description || item.description;
-        item.price = req.body.price ||item.price;
+        item.price = req.body.price || item.price;
         item.countMany = req.body.countMany || item.countMany;
         item.rating = req.body.rating || item.rating;
         item.numReviews = req.body.numReviews || item.numReviews;
-       
+
         const updatedItem = await item.save();
 
         res.send({
@@ -227,11 +215,11 @@ productRouter.put('/:id/editItem/:slug', auth, expressAsyncHandler(async (req, r
             countMany: updatedItem.countMany,
             rating: updatedItem.rating,
             numReviews: updatedItem.numReviews,
-           // token:generateToken(updatedItem)
+            // token:generateToken(updatedItem)
         });
-      
-    }else{
-        res.status(404).send({message: 'Item Not Found'})
+
+    } else {
+        res.status(404).send({ message: 'Item Not Found' })
     }
 }));
 

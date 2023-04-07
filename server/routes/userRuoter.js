@@ -46,7 +46,6 @@ userRouter.post('/register', expressAsyncHandler(async (req, res) => {
 
 userRouter.put('/profile', auth, expressAsyncHandler(async (req, res) => {
     const user = await User.findById(req.user._id);
-    console.log(req.body)
     if (user) {
         user.username = req.body.username || user.username;
         user.email = req.body.email || user.email;
