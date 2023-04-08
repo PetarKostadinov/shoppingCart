@@ -4,7 +4,7 @@ import { Helmet } from 'react-helmet-async';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import getError from '../util';
-import { Store } from './Store';
+import { Store } from '../helpersComponents/Store';
 import { updateItem } from '../service/productService';
 
 function EditItemPage() {
@@ -28,7 +28,7 @@ function EditItemPage() {
     const submitHandler = async (e) => {
         e.preventDefault();
         dispatch({ type: 'UPDATE_ITEM_REQUEST' });
-console.log(state)
+
         try {
             if (isNaN(e.target.price.value) === true || e.target.price.value < 1) {
                 throw new Error('Price should be a Positive Number');

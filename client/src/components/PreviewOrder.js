@@ -6,12 +6,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import getError from "../util";
 import Checkout from "./CheckoutSteps";
-import LoadingComponent from "./LoadingComponent";
-import { Store } from "./Store";
+import LoadingComponent from "../helpersComponents/LoadingComponent";
+import { Store } from "../helpersComponents/Store";
 import { createOrder } from "../service/orderService";
 import { calculateCartTotals } from "../service/calculateCartTotals";
 
-function Order() {
+function PreviewOrder() {
     const navigate = useNavigate();
     const { state, dispatch: ctxDispatch } = useContext(Store);
     const { cart, userInfo } = state;
@@ -154,4 +154,4 @@ function Order() {
     )
 }
 
-export default Order;
+export default PreviewOrder;

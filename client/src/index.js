@@ -5,7 +5,7 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { HelmetProvider } from "react-helmet-async";
-import StoreProvider from './components/Store';
+import StoreProvider from './helpersComponents/Store';
 import { PayPalScriptProvider } from '@paypal/react-paypal-js';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -13,7 +13,9 @@ root.render(
   <React.StrictMode>
     <StoreProvider>
       <HelmetProvider>
-        <PayPalScriptProvider deferLoading={true}>
+        <PayPalScriptProvider deferLoading={true}> 
+        {/* Setting deferLoading={true} is to optimize the initial load time of the application 
+        and only load the PayPal script when it is actually needed */}
           <App />
         </PayPalScriptProvider>
       </HelmetProvider>

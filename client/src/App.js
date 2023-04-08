@@ -9,19 +9,19 @@ import Login from "./components/Login";
 import ShippingInfo from "./components/ShippingInfo";
 import Register from "./components/Register";
 import Payment from "./components/Payment";
-import OrderPage from "./components/OrderPage";
-import OrderSummary from "./components/OrderSummary";
+import PreviewOrder from "./components/PreviewOrder";
+import OrderFinalStep from "./components/OrderFinalStep";
 import OrderHistory from "./components/OrderHistory";
 import Profile from "./components/Profile";
 import SearchPage from "./components/SearchPage";
-import Protected from "./components/Protected";
+import Protected from "./helpersComponents/Protected";
 import DashboardPage from "./components/DashboardPage";
-import AdminRoute from "./components/AdminRoute";
+import AdminRoute from "./helpersComponents/AdminRoute";
 import Header from "./components/Header";
 import { useState } from "react";
 import CreateItem from "./components/CreateItem";
 import EditItemPage from "./components/EditItemPage";
-import CarouselComponent from "./components/Carousel";
+import CarouselComponent from "./helpersComponents/Carousel";
 import Footer from "./components/Footer";
 
 function App() {
@@ -45,10 +45,10 @@ function App() {
               <Route path="/login" element={<Login />} />
               <Route path="/profile" element={<Protected><Profile /></Protected>} />
               <Route path="/register" element={<Register />} />
-              <Route path="/shipping" element={<ShippingInfo />} />
-              <Route path="/payment" element={<Payment />} />
-              <Route path="/order" element={<OrderPage />} />
-              <Route path="/order/:id" element={<Protected><OrderSummary /></Protected>} />
+              <Route path="/shipping" element={<Protected><ShippingInfo /></Protected>} />
+              <Route path="/payment" element={<Protected><Payment /></Protected>} />
+              <Route path="/order" element={<Protected><PreviewOrder /></Protected>} />
+              <Route path="/order/:id" element={<Protected><OrderFinalStep /></Protected>} />
               <Route path="/orderhistory" element={<Protected><OrderHistory /></Protected>} />
               <Route path="/product/:id/:slug" element={<DetailsPage />} />
               {/* Admin Routes */}

@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
 import { Button, Card } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import Rating from './Rating';
-import { Store } from './Store';
+import Rating from '../helpersComponents/Rating';
+import { Store } from '../helpersComponents/Store';
 import { getProduct } from '../service/productService';
 
 function Product(props) {

@@ -3,7 +3,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Button, Container, Form } from 'react-bootstrap';
 import { Helmet } from 'react-helmet-async';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Store } from './Store';
+import { Store } from '../helpersComponents/Store';
 import { toast } from 'react-toastify';
 import { loginUser } from '../service/userService';
 

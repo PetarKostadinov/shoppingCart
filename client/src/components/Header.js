@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import { Badge, Button, Container, Nav, Navbar, NavDropdown } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
-import { Link } from 'react-router-dom'
-import { Store } from './Store';
+import { Link, useNavigate } from 'react-router-dom'
+import { Store } from '../helpersComponents/Store';
 import SearchInput from "./SearchInput";
 import { toast } from 'react-toastify';
 import getError from '../util';
@@ -14,14 +14,14 @@ function Header() {
     const [categories, setCategories] = useState([]);
     const { state, dispatch: ctxDispatch } = useContext(Store);
     const { cart, userInfo } = state;
+    const navigate = useNavigate();
+    const sideBarRef = useRef(null);
 
     const logoutHandler = () => {
         ctxDispatch({ type: 'USER_LOGOUT' });
         localStorage.clear()
-        window.location.href = '/';
+        navigate('/');
     };
-
-    const sideBarRef = useRef(null);
 
     const handleOutsideClick = (event) => {
         if (sideBarRef.current && !sideBarRef.current.contains(event.target)) {
@@ -36,7 +36,6 @@ function Header() {
                 setCategories(data);
 
             } catch (err) {
-
                 toast.error(getError(err));
             }
         };

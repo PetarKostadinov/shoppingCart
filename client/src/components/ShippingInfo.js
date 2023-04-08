@@ -3,7 +3,7 @@ import { Button, Form } from 'react-bootstrap'
 import { Helmet } from 'react-helmet-async'
 import { useNavigate } from 'react-router-dom';
 import CheckoutSteps from './CheckoutSteps';
-import { Store } from './Store';
+import { Store } from '../helpersComponents/Store';
 
 function ShippingInfo() {
 

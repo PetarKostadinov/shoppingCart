@@ -4,12 +4,12 @@ import { Helmet } from 'react-helmet-async';
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'react-toastify';
 
-import { Store } from './Store';
+import { Store } from '../helpersComponents/Store';
 import { deleteProduct, fetchProduct } from '../service/productService';
 import getError from '../util';
-import LoadingComponent from './LoadingComponent';
-import MessageComponent from './MessageComponent';
-import Rating from './Rating';
+import LoadingComponent from '../helpersComponents/LoadingComponent';
+import MessageComponent from '../helpersComponents/MessageComponent';
+import Rating from '../helpersComponents/Rating';
 
 function ProductScreen() {
     const navigate = useNavigate();

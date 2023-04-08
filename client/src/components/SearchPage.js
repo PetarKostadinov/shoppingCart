@@ -6,10 +6,10 @@ import { LinkContainer } from 'react-router-bootstrap';
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify';
 import getError from '../util';
-import LoadingComponent from './LoadingComponent';
-import MessageComponent from './MessageComponent';
+import LoadingComponent from '../helpersComponents/LoadingComponent';
+import MessageComponent from '../helpersComponents/MessageComponent';
 import Product from './Product';
-import Rating from './Rating';
+import Rating from '../helpersComponents/Rating';
 import { getProducts } from '../service/searchService';
 import { getCategories } from '../service/searchService';
 

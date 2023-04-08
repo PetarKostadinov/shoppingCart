@@ -1,10 +1,9 @@
-
 import React, { useContext } from 'react';
 import { Button, Card, Col, ListGroup, Row } from 'react-bootstrap';
 import { Helmet } from 'react-helmet-async';
 import { Link, useNavigate } from 'react-router-dom';
-import MessageComponent from './MessageComponent';
-import { Store } from './Store';
+import MessageComponent from '../helpersComponents/MessageComponent';
+import { Store } from '../helpersComponents/Store';
 import {getProductById} from '../service/cartService';
 
 function CartScreen() {

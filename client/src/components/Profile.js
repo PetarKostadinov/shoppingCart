@@ -3,7 +3,7 @@ import { Button, Form } from 'react-bootstrap';
 import { Helmet } from 'react-helmet-async';
 import { toast } from 'react-toastify';
 import getError from '../util';
-import { Store } from './Store';
+import { Store } from '../helpersComponents/Store';
 import { updateProfile } from '../service/userService';
 
 function Profile() {

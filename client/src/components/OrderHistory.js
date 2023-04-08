@@ -3,9 +3,9 @@ import { Button } from 'react-bootstrap';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
 import getError from '../util';
-import LoadingComponent from './LoadingComponent';
-import MessageComponent from './MessageComponent';
-import { Store } from './Store';
+import LoadingComponent from '../helpersComponents/LoadingComponent';
+import MessageComponent from '../helpersComponents/MessageComponent';
+import { Store } from '../helpersComponents/Store';
 import { fetchOrderHistory } from '../service/orderService';
 
 function OrderHistory() {

@@ -7,9 +7,9 @@ import { Helmet } from 'react-helmet-async';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import getError from '../util';
 
-import LoadingComponent from './LoadingComponent';
-import MessageComponent from './MessageComponent';
-import { Store } from './Store';
+import LoadingComponent from '../helpersComponents/LoadingComponent';
+import MessageComponent from '../helpersComponents/MessageComponent';
+import { Store } from '../helpersComponents/Store';
 import { toast } from 'react-toastify';
 
 function reducer(state, action) {
@@ -34,7 +34,7 @@ function reducer(state, action) {
     }
 };
 
-function OrderSummary() {
+function OrderFinalStep() {
     const params = useParams();
     const { id: orderId } = params;
     const navigate = useNavigate();
@@ -241,7 +241,7 @@ function OrderSummary() {
     );
 }
 
-export default OrderSummary;
+export default OrderFinalStep;
 
 
 

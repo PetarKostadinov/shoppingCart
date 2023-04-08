@@ -3,8 +3,8 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Product from './Product';
 import { Helmet } from 'react-helmet-async';
-import LoadingComponent from './LoadingComponent';
-import MessageComponent from './MessageComponent';
+import LoadingComponent from '../helpersComponents/LoadingComponent';
+import MessageComponent from '../helpersComponents/MessageComponent';
 import { fetchProducts } from '../service/productService';
 import { useLocation } from 'react-router-dom';
 import { generatePaginationLinks } from '../service/paginationService';
@@ -21,7 +21,7 @@ function Home() {
     const [error, setError] = useState('');
     const [products, setProducts] = useState([]);
     const [totalPages, setTotalPages] = useState(1);
-    const [productsPerPage, setProductsPerPage] = useState(productsToShow);
+   
 
     const query = useQuery();
     const page = parseInt(query.get("page")) || 1;
@@ -30,7 +30,7 @@ function Home() {
         const fetchData = async () => {
             setLoading(true);
             try {
-                const data = await fetchProducts(currentPage, productsPerPage);
+                const data = await fetchProducts(currentPage, productsToShow);
                 setProducts(data);
                 setTotalPages(Math.ceil(data.length / productsToShow));
                 setLoading(false);
@@ -42,10 +42,10 @@ function Home() {
 
         setCurrentPage(page);
         fetchData();
-    }, [currentPage, productsPerPage, page]);
+    }, [currentPage, productsToShow, page]);
 
-    const indexOfLastProduct = currentPage * productsPerPage;
-    const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+    const indexOfLastProduct = currentPage * productsToShow;
+    const indexOfFirstProduct = indexOfLastProduct - productsToShow;
     const currentProducts = products.slice(indexOfFirstProduct, indexOfLastProduct);
 
     const paginationLinks = generatePaginationLinks(currentPage, totalPages);

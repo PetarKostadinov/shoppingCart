@@ -3,19 +3,20 @@ import { Button, Form } from 'react-bootstrap'
 import { Helmet } from 'react-helmet-async'
 import { useNavigate } from 'react-router-dom'
 import Checkout from './CheckoutSteps'
-import { Store } from './Store'
+import { Store } from '../helpersComponents/Store'
 
 function Payment() {
     const navigate = useNavigate();
     const { state, dispatch: ctxDispatch } = useContext(Store);
     const { cart: { shippingInfo, paymentMethod } } = state;
     const [paymentName, setPayment] = useState(paymentMethod || 'PayPal');
-    
+
     useEffect(() => {
         if (!shippingInfo.address) {
             navigate('/shipping')
         }
     }, [shippingInfo, navigate]);
+
     const submitHandler = (e) => {
         e.preventDefault();
         ctxDispatch({ type: 'SAVE_PAYMENT_METHOD', payload: paymentName });
