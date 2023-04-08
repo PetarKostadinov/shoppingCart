@@ -94,7 +94,7 @@ function Order() {
                                                 <img src={item.image} alt={item.name}
                                                     className="img-fluid rounded img-thumbnail"
                                                 ></img>{' '}
-                                                <Link className="hov" to={`/product/${item.slug}`}>{item.name}</Link>
+                                                <Link className="hov" to={`/product/${item._id}/${item.slug}`}>{item.name}</Link>
                                             </Col>
                                             <Col className="text-white" md={3}><span>{item.quantity}</span></Col>
                                             <Col className="text-white" md={3}>{item.price}</Col>

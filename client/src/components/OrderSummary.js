@@ -172,7 +172,7 @@ function OrderSummary() {
                                                             alt={item.name}
                                                             className="img-fluid rounded img-thumbnail"
                                                         ></img>{' '}
-                                                        <Link className="hov" to={`/product/${item.slug}`}>{item.name}</Link>
+                                                        <Link className="hov" to={`/product/${item._id}/${item.slug}`}>{item.name}</Link>
                                                     </Col>
                                                     <Col md={3}>
                                                         <span className="text-white">{item.quantity}</span>
