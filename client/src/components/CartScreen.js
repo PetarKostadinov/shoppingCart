@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+
 import { Button, Card, Col, ListGroup, Row } from 'react-bootstrap';
 import { Helmet } from 'react-helmet-async';
 import { Link, useNavigate } from 'react-router-dom';
@@ -39,7 +40,7 @@ function CartScreen() {
                 <Col md={8}>
                     {cartItems.length === 0 ? (
                         <MessageComponent>
-                            Cart is empty. <Link to="/">Go Shoping</Link>
+                            Cart is empty <Link to="/">Go Shoping</Link>
                         </MessageComponent>
                     ) : (
                         <ListGroup>
