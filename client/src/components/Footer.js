@@ -16,7 +16,7 @@ function Footer() {
                     the alcohol industry started evolving at a rapid pace. 
                     As such, the industry has gained extreme significance recently. 
                     The alcoholic beverage industry now has millions of stores around the world. 
-                    Recently, we've even seen an increase in business owners taking the opportunity to start selling alcohol online.
+                    Recently, we've even seen increase in business owners taking the opportunity to start selling alcohol online.
                   </p>
                 </div>
                 <hr className="w-100 clearfix d-md-none" />
