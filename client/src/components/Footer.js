@@ -13,7 +13,7 @@ function Footer() {
                   </h6>
                   <p>
                     After both the Prohibition era and COVID-19, 
-                    the alcohol industry started evolving at a rapid pace. 
+                    the alcohol industry started evolving at a rapid pace
                     As such, the industry has gained extreme significance recently. 
                     The alcoholic beverage industry now has millions of stores around the world. 
                     Recently, we've even seen increase in business owners taking the opportunity to start selling alcohol online.
